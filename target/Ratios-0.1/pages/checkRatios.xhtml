@@ -1,0 +1,154 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Comprobar ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+		
+
+		<p:panel header="Introducir los datos" id="actual">
+			<h:outputText value="Fecha actual: #{categoriaBean.currentDate}" />
+			<br />
+			<p:panelGrid columns="3" style="width:100%;"  rendered="#{roleBean.admin}">
+				<f:facet name="header">
+					Comprobar
+				</f:facet>
+				<p:column style="width:20%">
+					Usuario
+				</p:column>
+					<p:column style="width:20%">
+					Fecha inicio
+				</p:column>
+					<p:column style="width:10%">
+					Fecha fin
+				</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu id="advanced" value="#{checkRatiosBean.nombreUsuario}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{checkRatiosBean.usuarios}" var="obra"
+							itemLabel="#{obra.nombreUsuario}" itemValue="#{obra.nombreUsuario}" />
+						<p:ajax update="actual" />
+						<p:column>
+							<h:outputText value="#{obra.nombreUsuario} #{obra.apellido}" />
+						</p:column>
+					</p:selectOneMenu>
+				</p:column>
+				<p:column>
+					<p:calendar value="#{checkRatiosBean.fechaInicio}" id="popupCalIntrIni"
+						locale="es" />
+				</p:column>
+				<p:column>
+					<p:calendar value="#{checkRatiosBean.fechaFin}" id="popupCalIntrFin"
+						locale="es" />
+				</p:column>
+			</p:panelGrid>
+			
+			<p:panelGrid columns="2" style="width:100%;"  rendered="#{!roleBean.admin}">
+				<f:facet name="header">
+					Comprobar
+				</f:facet>
+					<p:column style="width:20%">
+					Fecha inicio
+				</p:column>
+					<p:column style="width:10%">
+					Fecha fin
+				</p:column>
+				<p:column>
+					<p:calendar value="#{checkRatiosBean.fechaInicio}" id="popupCalIntrIniUser"
+						locale="es" />
+				</p:column>
+				<p:column>
+					<p:calendar value="#{checkRatiosBean.fechaFin}" id="popupCalIntrFinUser"
+						locale="es" />
+				</p:column>
+			</p:panelGrid>
+			<p:commandButton value="Comprobar ratios" id="save" ajax="true"
+				update="@form" actionListener="#{checkRatiosBean.checkRatios}"> 
+			</p:commandButton>
+			<p:commandButton value="Comprobar ratios de todos" id="saveAll" ajax="true" rendered="#{roleBean.admin}"
+				update="@form" actionListener="#{checkRatiosBean.checkAllRatios}"> 
+			</p:commandButton>
+		</p:panel>
+
+		<p:panel header="Fechas donde faltan ratios" id="ratiosFaltantes">
+			<p:dataTable var="obras" value="#{checkRatiosBean.diasSinRatios}" id="obras">
+				<p:column headerText="Usuario" style="width:20%" resizable="true" rendered="#{roleBean.admin}">
+					<h:outputText value="#{obras.user}" />
+				</p:column>
+				<p:column headerText="Fecha" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.dia}, #{obras.fecha}" />
+				</p:column>
+				<p:column headerText="Horas introducidas" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.horas}" />
+				</p:column>
+				<p:column headerText="Horas restantes" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.horasFaltantes}" />
+				</p:column>
+			</p:dataTable>
+				
+				<h:commandLink  rendered="#{!roleBean.admin}">
+			        <h:graphicImage value="/images/excel.png" />
+			        <p:dataExporter type="xls" target="obras" fileName="Ratios sin rellenar"/>
+			    </h:commandLink>
+			    
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

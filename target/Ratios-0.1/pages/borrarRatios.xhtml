@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Ratios antiguos" id="antiguos">
+			<p:panel header="Búsqueda" id="filtro">
+				<p:panelGrid columns="4" style="width:100%; text-align:left">
+
+					<p:column>
+						<h:outputText value="Usuario:" />
+						<p:selectOneMenu value="#{obraBean.usuarioFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.usuarios}" var="usuario"
+								itemLabel="#{usuario.nombreUsuario}" itemValue="#{usuario.nombreUsuario}" />
+						</p:selectOneMenu>
+						<p:commandButton value="Filtrar por usuario" id="filtroUsuario"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioPorUsuarioHistorica}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Código:" />
+						<p:selectOneMenu value="#{obraBean.codigoFilter}"
+							id="obraCodigoSelect">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.obrasHistoricas}" var="obra"
+								itemLabel="#{obra.codigoObra}" itemValue="#{obra.codigoObra}" />
+							<p:ajax listener="#{obraBean.updateObra()}"
+								update="obraNombreSelect" />
+						</p:selectOneMenu>
+						<p:commandButton value="Filtrar por código" id="filtroCodigo"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioCodigoHistorica}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Obra:" />
+						<p:selectOneMenu id="obraNombreSelect" value="#{obraBean.nombreObraFilter}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{obraBean.obrasHistoricas}" var="obra"
+							itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						<p:column>
+							<h:outputText value="#{obras.nombreObra}" />
+						</p:column>
+						<p:ajax listener="#{obraBean.updateCodigo()}"
+							update="obraCodigoSelect" />
+					</p:selectOneMenu>
+						<p:commandButton value="Filtrar por obra" id="filtroObra"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioObraHistorica}" />
+					</p:column>
+					
+					<p:column>
+						<h:outputText value="Año:" />
+						<p:inputText value="#{obraBean.yearFiltro}" id="yearSelect"/>
+						<p:commandButton value="Filtrar por año" id="filtroYearObra"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioYearHistorica}" />
+					</p:column>
+
+				</p:panelGrid>
+				
+				<p:commandButton value="Ver todos" actionListener="#{obraBean.updateObrasDeUsuarioHistorico()}" update="@form" id="verTodos">
+				</p:commandButton>	
+					
+				<p:commandButton value="Borrar ratios antiguos" onclick="confirmation.show()" id="borrar" update="messages">
+				</p:commandButton>
+
+			</p:panel>
+
+
+			<p:panel header="Obras existentes" id="exist">
+				<p:dataTable id="obras" var="obras" value="#{obraBean.obrasHistorico}">
+					<p:column headerText="Usuario">
+						<h:outputText value="#{obras.usuario}" />
+					</p:column>
+					<p:column headerText="Código">
+						<h:outputText value="#{obras.codigoObra}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{obras.titulo}" />
+					</p:column>
+					<p:column headerText="Obra">
+						<h:outputText value="#{obras.nombreObra}" />
+					</p:column>
+					<p:column headerText="Horas técnicas">
+						<h:outputText value="#{obras.horasTecnicas}" />
+					</p:column>
+					<p:column headerText="Horas admin./delin.">
+						<h:outputText value="#{obras.horasAdmin}" />
+					</p:column>
+					<p:column headerText="Horas total">
+						<h:outputText value="#{obras.horasTotal}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:panel header="Exportar datos">
+					<h:commandLink>
+						<h:graphicImage value="/images/excel.png" />
+						<p:dataExporter type="xls" target="obras2"
+							fileName="Datos generales" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink>
+						<h:graphicImage value="/images/pdf.png" />
+						<p:dataExporter type="pdf" target="obras2"
+							fileName="Datos generales" encoding="iso-8859-1" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink type="button">
+						<a href='javascript:window.print(); void 0;'><h:graphicImage value="/images/print.png" /></a>
+					</h:commandLink>
+				</p:panel>
+			</h:panelGrid>
+		</p:panel>
+    <p:confirmDialog message="Está seguro?" widgetVar="confirmation" width="400" height="75">
+        <p:commandButton value="Si" actionListener="#{obraBean.borrar}" oncomplete="confirmation.hide()" update="@form" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" oncomplete="confirmation.hide()" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    
+    	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

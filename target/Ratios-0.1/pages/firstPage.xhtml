@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<style type="text/css">
+body {
+	margin: 0em auto;
+	text-align: center;
+	color: black;
+	background-color: white;
+}
+
+#fondo {
+	position: absolute;
+	left: 0;
+	top: 5%;
+	width: 100%;
+	min-width: 700px;
+	z-index: -1;
+}
+
+#login {
+	position: absolute;
+	top: 40%; /* Buscamos el centro horizontal (relativo) del navegador */
+	left: 40%; /* Buscamos el centro vertical (relativo) del navegador */
+	width: 600 px; /* Definimos el ancho del objeto a centrar */
+	height: 400px; /* Definimos el alto del objeto a centrar */
+	font-size: 25px;
+}
+
+</style>
+
+
+</h:head>
+<h:body>
+	<div id="container">
+
+		<!-- 	<div style="position:relative;top:300px; font-size:25px">
+	<h:graphicImage id="imagen" url="/page/Portada.jpg"/>
+	
+	</div> -->
+		<!-- 
+	<div  style="position:relative;top:180px; font-size:25px">
+	<a href="./page/index.xhtml"><h:outputText value="Entrar"/></a> 
+	</div>
+	 -->
+
+		<div id="login">
+			<h:form>
+				<p:panel header="Entrar">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="username" value="Nombre de usuario:"
+							style="font-family:'century gothic',verdana,arial,helvetica,sans-serif; color:#000000;" />
+						<p:inputText value="#{logInBean.loginName}" id="username"
+							required="true" label="username" />
+
+						<h:outputLabel for="password" value="Contraseña:"
+							style="font-family:'century gothic',verdana,arial,helvetica,sans-serif; color:#000000;" />
+						<h:inputSecret value="#{logInBean.password}" id="password"
+							required="true" label="password" />
+
+
+
+
+						<f:facet name="footer">
+							<p:commandButton id="loginButton" value="Acceder" update="growl"
+								action="#{logInBean.doLogin}" actionListener="#{loaderBean.firstPage()}" ajax="false"
+								oncomplete="handleLoginRequest(xhr, status, args)" />
+						</f:facet>
+					</h:panelGrid>
+		</p:panel>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+    
+    <link href="/css/layout.css" rel="stylesheet" type="text/css"/>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+
+<div id="container">
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="/pages/layout/header.xhtml" />
+		</ui:insert>
+	</div>
+
+	<div id="navCon">
+		<ui:insert name="mainnav">
+			<ui:include src="/pages/layout/mainNav.xhtml" />
+		</ui:insert>
+	</div>
+
+	<div id="content">
+		<ui:insert name="content">
+			Content
+		</ui:insert>
+	</div>
+
+	<div id="footer" align="center">
+		<ui:insert name="footer" >
+			<ui:include src="/pages/layout/footer.xhtml" />
+		</ui:insert>
+	</div>
+
+</div>
+
+</h:body>
+</html>

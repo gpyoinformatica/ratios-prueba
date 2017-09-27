@@ -1,0 +1,219 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Impuestos</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+
+	<style>
+.highlight1 {
+	background: #A52A2A !important;
+	font-weight: bold !important;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Seleccionar" id="actual">
+			<p:panelGrid columns="2" style="width:100%;">
+				<f:facet name="header">
+					Impuestos
+				</f:facet>
+				<p:column style="width:20%">
+					Año
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{impuestosBean.year}" id="pagado" />
+				</p:column>
+			</p:panelGrid>
+			<p:commandButton value="Ver informe" id="save" ajax="true"
+				update="@form" actionListener="#{impuestosBean.generarImpuestos}">
+			</p:commandButton>
+		</p:panel>
+
+		<p:panel header="IVA" id="tesoreria">
+				<p:dataTable var="obras" value="#{impuestosBean.impuestosIVA}"
+					id="obras" editable="true" resizableColumns="true"
+					style="width:100%">
+					
+					<f:facet name="header">
+						<h:outputText value="#{impuestosBean.year}" />
+					</f:facet>
+					<p:column style="width:30%" headerText="IVA">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.titulo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.titulo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:10%" headerText="1 T">
+						<h:outputText value="#{obras.primerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:10%" headerText="2 T">
+						<h:outputText value="#{obras.segundoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="3 T">
+						<h:outputText value="#{obras.tercerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="4 T">
+						<h:outputText value="#{obras.cuartoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+						<h:outputText value="#{obras.total}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+				
+			<p:panel header="IRPF" id="impuestosIRPF">
+				<p:dataTable var="obras" value="#{impuestosBean.impuestosIRPF}"
+					id="obrasirpf" editable="true" resizableColumns="true"
+					style="width:100%">
+					
+					<f:facet name="header">
+						<h:outputText value="#{impuestosBean.year}" />
+					</f:facet>
+					<p:column style="width:30%" headerText="IRPF">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.titulo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.titulo}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:10%" headerText="1 T">
+						<h:outputText value="#{obras.primerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="2 T">
+						<h:outputText value="#{obras.segundoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="3 T">
+						<h:outputText value="#{obras.tercerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="4 T">
+						<h:outputText value="#{obras.cuartoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+						<h:outputText value="#{obras.total}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+				
+			<p:panel header="SS" id="impuestosSS">
+				<p:dataTable var="obras" value="#{impuestosBean.impuestosSS}"
+					id="obrasss" editable="true" resizableColumns="true"
+					style="width:100%">
+					
+					<f:facet name="header">
+						<h:outputText value="#{impuestosBean.year}" />
+					</f:facet>
+					<p:column style="width:30%" headerText="Seguridad Social">
+						<h:outputText value="#{obras.titulo}" />
+					</p:column>
+					<p:column style="width:10%" headerText="1 T">
+						<h:outputText value="#{obras.primerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="2 T">
+						<h:outputText value="#{obras.segundoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="3 T">
+						<h:outputText value="#{obras.tercerTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="4 T">
+						<h:outputText value="#{obras.cuartoTrimestre}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+						<h:outputText value="#{obras.total}">
+							<f:convertNumber pattern="#,##0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Datos del usuario" id="edit">
+			<p:panelGrid columns="1" style="width:100%;">
+				<p:row>
+					<h:outputText value="Nombre de usuario: " />
+					<p:inputText value="#{usuarioBean.usuario2.nombreUsuario}"
+						required="true" id="userName" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Nombre: " />
+					<p:inputText value="#{usuarioBean.usuario2.nombre}" id="name" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Apellidos: " />
+					<p:inputText value="#{usuarioBean.usuario2.apellido}" id="surname" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Contraseña: " />
+					<p:password value="#{usuarioBean.usuario2.password}"
+						required="true" id="password" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Repita la contraseña: " />
+					<p:password value="#{usuarioBean.password2}" required="true"
+						id="password2" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Rol: " />
+					<p:selectOneMenu value="#{usuarioBean.role}" id="rol">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{usuarioBean.rol}" var="rol"
+							itemLabel="#{rol}" itemValue="#{rol}" />
+					</p:selectOneMenu>
+				</p:row>
+			</p:panelGrid>
+			<p:commandButton value="Insertar usuario" id="insert" update="@form"
+				ajax="true" action="#{usuarioBean.insertUsuario()}"
+				styleClass="ui-priority-primary" />
+
+		</p:panel>
+			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

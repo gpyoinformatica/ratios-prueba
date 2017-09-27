@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/schema/security">
+
+<h:body>
+	
+	<h:form>
+    	<p:breadCrumb>  
+    			<p:menuitem update=":contentLoader"
+	            	actionListener="#{loaderBean.openPage('/pages/userPage.xhtml')}" action="#{introducirBean.showTodayRatios()}"/>
+	            <p:menuitem value="Ver ratios" update=":contentLoader" rendered="#{!roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/oldUserPage.xhtml')}" action="#{introducirBean.showTodayRatios()}"/>
+	             <p:menuitem value="Editar usuario" update=":contentLoader" 
+	            	actionListener="#{loaderBean.openPage('/pages/user.xhtml')}" action="#{usuarioBean.showUsuario()}"/>
+	            <p:menuitem value="Crear usuario" update=":contentLoader"
+	            	actionListener="#{loaderBean.openPage('/pages/createUsuario.xhtml')}" rendered="#{roleBean.admin}"/>
+	            <p:menuitem value="Ver usuarios" update=":contentLoader"  rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/verUsuarios.xhtml')}"/>
+	            <p:menuitem value="Crear obra" update=":contentLoader"  rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/createObras.xhtml')}" action="#{obraBean.showObras()}"/>
+	            <p:menuitem value="Ver obras" update=":contentLoader"  rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/verRatiosAdmin.xhtml')}" action="#{resumeBean.showObras()}"/>
+	            <p:menuitem value="Datos generales" update=":contentLoader"  rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/datosGenerales.xhtml')}" action="#{obraBean.showObras()}"/>
+	            <p:menuitem value="Obra-Usuario" update=":contentLoader"  rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/obraUsuario.xhtml')}" action="#{resumeBean.showObras()}"/>
+	            <p:menuitem value="Informe de obra" update=":contentLoader" rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/informeObra.xhtml')}" action="#{obraBean.showObrasInforme()}"/>
+	          	<p:menuitem value="Resetear ratios" update=":contentLoader" rendered="#{roleBean.admin}"
+	            	actionListener="#{loaderBean.openPage('/pages/borrarRatios.xhtml')}" action="#{obraBean.updateObrasDeUsuarioHistorico()}"/>
+				<p:menuitem value="Gastos" update=":contentLoader"  action="#{categoriaBean.showGastos()}" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/gastos.xhtml')}"/>
+	            <p:menuitem value="Ingresos" update=":contentLoader" action="#{categoriaBean.showIngresos()}" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/ingresos.xhtml')}"/>
+	          <p:menuitem value="Tesoreria" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/informeTesoreria.xhtml')}"/>
+	             <p:menuitem value="Resumen tesoreria" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/informeResumenTesoreria.xhtml')}"/>
+	             <p:menuitem value="Impuestos" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/informeImpuestos.xhtml')}"/>
+	            <p:menuitem value="Facturas" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/facturas.xhtml')}"/>
+	            <p:menuitem value="Costes reales totales" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/costesReales.xhtml')}"/>
+	            <p:menuitem value="Previsiones reales totales" update=":contentLoader" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/costesPrevisiones.xhtml')}"/>
+	            <p:menuitem value="Bancos" update=":contentLoader" action="#{categoriaBean.showBancos()}" rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/bancos.xhtml')}"/>
+	            <p:menuitem value="Comprobar ratios" update=":contentLoader" rendered="#{!roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/checkRatios.xhtml')}" action="#{checkRatiosBean.loadUsers()}"/>
+	             <p:menuitem value="Introducir empresa" update=":contentLoader"  rendered="#{roleBean.tesoreria}"
+	            	actionListener="#{loaderBean.openPage('/pages/empresas.xhtml')}" action="#{empresaBean.showEmpresas()}"/>
+    </p:breadCrumb>   
+    
+	</h:form> 
+</h:body>
+</html>

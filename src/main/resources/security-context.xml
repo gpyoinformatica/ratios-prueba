@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/security
+     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- Enable method level Spring Security by annotations  -->
+   <sec:global-method-security pre-post-annotations="enabled" />  
+   <sec:http auto-config="true" use-expressions="true">
+
+       <!-- Page level Spring Security : Intercept access to resources in /pages/secure/** -->
+       <sec:intercept-url pattern="/page/**" access="hasRole('ROLE_MODERATOR')" />
+
+       <!-- Page level Spring Security : Permit access to resources in /pages/unsecure/** -->
+       <sec:intercept-url pattern="/page/**" access="permitAll"/>
+
+       <!-- Page level Spring Security : Intercept access to resources in /** -->
+       <sec:intercept-url pattern="/**" access="hasRole('ROLE_MODERATOR')"/>
+
+       <!-- Page level Spring Security : Enable Primefaces -->
+       <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+ 
+       <!-- Define login page for Spring Security -->      
+       <sec:form-login login-page="/page/login.xhtml"/>
+
+       <!-- Define logout properties for Spring Security -->
+       <sec:logout invalidate-session="true" delete-cookies="true" logout-success-url="/"></sec:logout>
+       
+   </sec:http>
+  
+   <!-- Set customUserDetailsService class as the authentication Manager for Spring Security-->
+   <sec:authentication-manager alias="authenticationManager">
+       <sec:authentication-provider user-service-ref="customUserDetailsService">
+           <sec:password-encoder hash="plaintext"></sec:password-encoder>
+       </sec:authentication-provider>
+   </sec:authentication-manager>
+
+    <!-- Inject authentication Manager to our LoginBean -->
+    <beans:bean id="loginBean" name="loginBean" class="gpyo.gui.model.LoginBean" scope="prototype">
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="introducirBean" name="introducirBean" class="gpyo.gui.model.IntroducirBean" scope="request"/>
+    
+    <!-- Si el loader es session  se guarda la última página visitada en el navegador del usuario durante la sesión del navegador. -->
+    <beans:bean id="loaderBean" name="loaderBean" class="gpyo.gui.model.LoaderBean" scope="session"/>
+    <beans:bean id="categoriaBean" name="categoriaBean" class="gpyo.gui.model.CategoriaBean" scope="session"/>
+    <beans:bean id="checkRatiosBean" name="checkRatiosBean" class="gpyo.gui.model.CheckRatiosBean" scope="session"/>
+    <beans:bean id="costesRealesBean" name="costesRealesBean" class="gpyo.gui.model.CostesRealesBean" scope="request"/>
+    <beans:bean id="facturasBean" name="facturasBean" class="gpyo.gui.model.FacturasBean" scope="request"/>
+    <beans:bean id="impuestosBean" name="impuestosBean" class="gpyo.gui.model.ImpuestosBean" scope="request"/>
+    <beans:bean id="informeTesoreriaBean" name="informeTesoreriaBean" class="gpyo.gui.model.InformeTesoreriaBean" scope="session"/>
+    <beans:bean id="obraBean" name="obraBean" class="gpyo.gui.model.ObraBean" scope="request"/>
+    <beans:bean id="resumeBean" name="resumeBean" class="gpyo.gui.model.ResumeBean" scope="session"/>
+    <beans:bean id="resumenTesoreria" name="resumenTesoreria" class="gpyo.gui.model.ResumenTesoreria" scope="request"/>
+    <beans:bean id="resumenTesoreriaBean" name="resumenTesoreriaBean" class="gpyo.gui.model.ResumenTesoreriaBean" scope="session"/>
+    <beans:bean id="roleBean" name="roleBean" class="gpyo.gui.model.RoleBean" scope="session"/>
+    <beans:bean id="userBean" name="userBean" class="gpyo.gui.model.UserBean" scope="request"/>
+    <beans:bean id="usuarioBean" name="usuarioBean" class="gpyo.gui.model.UsuarioBean" scope="session"/>
+     
+</beans:beans>

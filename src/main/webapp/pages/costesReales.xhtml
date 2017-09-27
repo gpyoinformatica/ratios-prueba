@@ -1,0 +1,193 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Costes reales totales</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+
+	<style>
+.highlight1 {
+	background: #A52A2A !important;
+	font-weight: bold !important;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Seleccionar" id="actual">
+			<p:panelGrid columns="2" style="width:100%;">
+				<f:facet name="header">
+			Gastos
+			</f:facet>
+
+				<p:column style="width:20%">
+				Categoría
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{costesRealesBean.opcion}" update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{costesRealesBean.opciones}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+
+
+				<p:column style="width:20%">
+				Año
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{costesRealesBean.year}" id="pagado" />
+				</p:column>
+
+			</p:panelGrid>
+			<p:commandButton value="Ver costes" id="save" ajax="true"
+				update="@form" actionListener="#{costesRealesBean.verCostesReales}">
+			</p:commandButton>
+		</p:panel>
+
+		<p:panel header="Costes reales totales" id="gastos1">
+			<p:dataTable var="obras" value="#{costesRealesBean.costesReales}"
+				id="obras" resizableColumns="true"
+				rowStyleClass="#{(obras.mes) eq 'TOTALES' ? 'highlight1' : null}">
+				<p:column headerText=" " style="width:20%" resizable="true">
+					<h:outputText value="#{obras.mes}" />
+				</p:column>
+				<p:column headerText="PERS" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.pers}" />
+				</p:column>
+				<p:column headerText="GTOS" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.gtos}" />
+				</p:column>
+				<p:column headerText="SUM" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.sum}" />
+				</p:column>
+				<p:column headerText="VEH" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.veh}" />
+				</p:column>
+				<p:column headerText="TFNO" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.tfno}" />
+				</p:column>
+				<p:column headerText="MENS" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.mens}" />
+				</p:column>
+				<p:column headerText="SERV.PROF" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.servProf}" />
+				</p:column>
+				<p:column headerText="MAT OF" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.matOf}" />
+				</p:column>
+				<p:column headerText="MOB" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.mob}" />
+				</p:column>
+				<p:column headerText="INFOR" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.infor}" />
+				</p:column>
+				<p:column headerText="SEG" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.seg}" />
+				</p:column>
+				<p:column headerText="ASES" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.ases}" />
+				</p:column>
+				<p:column headerText="UBU" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.ubu}" />
+				</p:column>
+				<p:column headerText="BCOS" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.bcos}" />
+				</p:column>
+				<p:column headerText="VARIOS" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.varios}" />
+				</p:column>
+				<p:column headerText="ALQ" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.alq}" />
+				</p:column>
+				<p:column headerText="PTAMO" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.ptamo}" />
+				</p:column>
+				<p:column headerText="LIBR" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.libr}" />
+				</p:column>
+				<p:column headerText="ACAL" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.acal}" />
+				</p:column>
+				<p:column headerText="REPR" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.repr}" />
+				</p:column>
+				<p:column headerText="FORM" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.form}" />
+				</p:column>
+				<p:column headerText="LIMP" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.limp}" />
+				</p:column>
+				<p:column headerText="RESUMEN" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.resumen}" />
+				</p:column>
+				<p:column headerText="GLOBAL" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.global}" />
+				</p:column>
+				<p:column headerText="FACTURACION" style="width:20%"
+					resizable="true">
+					<h:outputText value="#{obras.facturacion}" />
+				</p:column>
+				<p:column headerText="GTOS PERU" style="width:20%" resizable="true">
+					<h:outputText value="#{obras.gtosPeru}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

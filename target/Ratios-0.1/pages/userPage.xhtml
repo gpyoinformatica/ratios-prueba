@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Introducir los ratios" id="actual">
+			<h:outputText value="Fecha actual: #{introducirBean.currentDate}" />
+			<br />
+			<p:panelGrid columns="6" style="width:100%;">
+				<f:facet name="header">
+			Ratios
+		</f:facet>
+				<p:column style="width:20%">
+				Código de obra
+			</p:column>
+				<p:column style="width:20%">
+				Obra
+			</p:column>
+				<p:column style="width:5%">
+				Horas técnicas
+			</p:column>
+				<p:column style="width:5%">
+				Horas admin./delin.
+			</p:column>
+				<p:column style="width:10%">
+				Visita
+			</p:column>
+				<p:column style="width:20%">
+				Tarea
+			</p:column>
+				<p:column  style="width:20%">
+					<p:selectOneMenu value="#{introducirBean.codigoObra}">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{introducirBean.obras}" var="obra"
+							itemLabel="#{obra.codigoObra}" itemValue="#{obra.codigoObra}" />
+						<p:ajax listener="#{introducirBean.updateObra()}" update="actual" />
+					</p:selectOneMenu>
+					</p:column>
+					<p:column  style="width:20%">
+					<p:selectOneMenu id="advanced" value="#{introducirBean.nombreObra}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{introducirBean.obras}" var="obra"
+							itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						<p:column>
+							<h:outputText value="#{obras.nombreObra}" />
+						</p:column>
+						<p:ajax listener="#{introducirBean.updateCodigo()}"
+							update="actual" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column  style="width:5%">
+					<p:inputText value="#{introducirBean.obraDeUsuario.horasTecnico}"
+						id="horasTec" />
+				</p:column>
+				<p:column  style="width:5%">
+					<p:inputText value="#{introducirBean.obraDeUsuario.horasAdmin}"
+						id="horasAdm" />
+				</p:column>
+				<p:column  style="width:10%">
+				<p:selectOneMenu value="#{introducirBean.obraDeUsuario.visita}"
+						update="visita">
+						<f:selectItem itemLabel=" " itemValue=" " />
+						<f:selectItems value="#{introducirBean.visitas}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column  style="width:20%">
+					<p:inputText value="#{introducirBean.obraDeUsuario.tarea}"
+						id="tarea" style="width:100%;" />
+				</p:column>
+
+			</p:panelGrid>
+			<p:commandButton value="Guardar ratio" id="save" ajax="true"
+				update="@form" actionListener="#{introducirBean.saveRatio}">
+			</p:commandButton>
+		</p:panel>
+
+		<p:panel header="Ratios introducidos" id="introducidos">
+			<p:dataTable var="obras" value="#{introducirBean.obrasUsuario}"
+				id="obras" editable="true" resizableColumns="true">
+
+				<p:ajax event="rowEdit" listener="#{introducirBean.onEdit}"
+					update=":form:messages" />
+				<p:ajax event="rowEditCancel" listener="#{introducirBean.onCancel}"
+					update=":form:messages" />
+
+				<p:column headerText="Código" style="width:7%">
+					<h:outputText value="#{obras.idObraDeUsuario.obra.codigoObra}" />
+				</p:column>
+
+				<p:column headerText="Obra" style="width:25%" resizable="true">
+					<h:outputText value="#{obras.idObraDeUsuario.obra.nombreObra}" />
+				</p:column>
+
+				<p:column headerText="Horas técnicas" style="width:7%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.horasTecnico}" style="float:right">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.horasTecnico}" style="width:100%"
+								label="HTecnica" />
+						</f:facet>
+					</p:cellEditor>
+					<f:facet name="footer">
+							<h:outputText value="Total: #{introducirBean.totalHorasTecnico}." style="float:right"/>
+						</f:facet>
+				</p:column>
+
+				<p:column headerText="Horas admin./delin." style="width:7%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.horasAdmin}" style="float:right">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.horasAdmin}" style="width:100%"
+								label="HAdmin" />
+						</f:facet>
+					</p:cellEditor>
+					<f:facet name="footer">
+							<h:outputText value="Total: #{introducirBean.totalHorasAdmin}." style="float:right"/>
+						</f:facet>
+				</p:column>
+
+				<p:column headerText="Visita" style="width:7%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.visita}" style="float:right"/>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.visita}" style="width:100%"
+								label="VAdmin" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Tarea" style="width:44%">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.tarea}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.tarea}" style="width:100%"
+								label="Tarea" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:5%" headerText="Editar">
+					<p:rowEditor />
+				</p:column>
+
+				<p:column style="width:5%" headerText="Borrar">
+					<p:commandLink id="trash" update="@form"
+						actionListener="#{introducirBean.deleteRatio(obras)}"
+						styleClass="ui-icon ui-icon-trash" />
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

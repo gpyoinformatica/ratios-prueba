@@ -1,0 +1,1200 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Gastos</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+	<style>
+.highlight1 {
+	background: #0099CC !important;
+	font-weight: bold !important;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Ingresos" id="actual" style="width:9150px">
+			<p:panelGrid columns="5">
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasIngresos}" id="obras"
+					resizableColumns="true" style="width:1800px">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.firstYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText="Obra">
+						<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Anteriores">
+						<h:outputText value="#{obras.anteriores}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+						<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+						<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+						<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+						<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+						<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+						<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+						<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+						<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+						<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+						<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+						<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+						<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasIngresos2}" id="obr2"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.secondYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+						<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+						<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+						<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+						<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+						<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+						<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+						<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+						<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+						<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+						<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+						<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+						<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+						<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasIngresos3}" id="obr3"
+					resizableColumns="true" style="width:1800px">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.thirdYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+						<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+						<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+						<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+						<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasIngresos4}" id="obr4"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fourthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasIngresos5}" id="obr5"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fifthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+								<h:outputText value="#{obras.total}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+
+			</p:panelGrid>
+		</p:panel>
+
+
+		<p:panel header="Gastos" id="actual2" style="width:9150px">
+			<p:panelGrid columns="5">
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasGastos}" id="gastos"
+					resizableColumns="true" style="width:1800px">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.firstYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText="Obra">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Anteriores">
+						<h:outputText value="#{obras.anteriores}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasGastos2}" id="gastos2"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.secondYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasGastos3}" id="gastos3"
+					resizableColumns="true" style="width:1800px">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.thirdYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasGastos4}" id="gastos4"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fourthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras"
+					value="#{resumenTesoreria.tesoreriasGastos5}" id="gastos5"
+					resizableColumns="true" style="width:1800px">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fifthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+								<h:outputText value="#{obras.total}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+
+			</p:panelGrid>
+		</p:panel>
+
+		<p:panel header="Flujo de caja" id="actual3" style="width:9150px">
+			<p:panelGrid columns="5">
+				<p:dataTable var="obras" value="#{resumenTesoreria.flujoCaja}"
+					id="flujoCaja" resizableColumns="true"
+					style="width:1800px"
+					rowStyleClass="#{(obras.titulos) eq 'Resultado a origen' ? 'highlight1' : null}">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.firstYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText="Obra">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Anteriores">
+						<h:outputText value="#{obras.anteriores}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras" value="#{resumenTesoreria.flujoCaja2}"
+					id="flujoCaja2" resizableColumns="true"
+					style="width:1800px"
+					rowStyleClass="#{(obras.titulos) eq 'Resultado a origen' ? 'highlight1' : null}">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.secondYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras" value="#{resumenTesoreria.flujoCaja3}"
+					id="flujoCaja3" resizableColumns="true"
+					style="width:1800px"
+					rowStyleClass="#{(obras.titulos) eq 'Resultado a origen' ? 'highlight1' : null}">
+
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.thirdYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras" value="#{resumenTesoreria.flujoCaja4}"
+					id="flujoCaja4" resizableColumns="true"
+					style="width:1800px"
+					rowStyleClass="#{(obras.titulos) eq 'Resultado a origen' ? 'highlight1' : null}">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fourthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="obras" value="#{resumenTesoreria.flujoCaja5}"
+					id="flujoCaja5" resizableColumns="true"
+					style="width:1800px"
+					rowStyleClass="#{(obras.titulos) eq 'Resultado a origen' ? 'highlight1' : null}">
+
+					<f:facet name="header">
+						<h:outputText value="#{resumenTesoreria.fifthYear}" />
+					</f:facet>
+					<p:column style="width:20%" headerText=" ">
+								<h:outputText value="#{obras.titulos}" />
+					</p:column>
+					<p:column style="width:10%" headerText="Enero">
+								<h:outputText value="#{obras.enero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Febrero">
+								<h:outputText value="#{obras.febrero}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Marzo">
+								<h:outputText value="#{obras.marzo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Abril">
+								<h:outputText value="#{obras.abril}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Mayo">
+								<h:outputText value="#{obras.mayo}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Junio">
+								<h:outputText value="#{obras.junio}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Julio">
+								<h:outputText value="#{obras.julio}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Agosto">
+								<h:outputText value="#{obras.agosto}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Septiembre">
+								<h:outputText value="#{obras.septiembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Octubre">
+								<h:outputText value="#{obras.octubre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Noviembre">
+								<h:outputText value="#{obras.noviembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Diciembre">
+								<h:outputText value="#{obras.diciembre}">
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+					<p:column style="width:10%" headerText="Total">
+								<h:outputText value="#{obras.total}" >
+										<f:convertNumber pattern="#,##0.00" />
+									</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+
+			</p:panelGrid>
+		</p:panel>
+
+
+	</h:form>
+</h:body>
+</html>

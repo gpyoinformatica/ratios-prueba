@@ -1,0 +1,158 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Ratios de: #{usuarioBean.usuario3.nombreUsuario}" id="antiguos">
+			<p:panel header="Búsqueda" id="filtro">
+				<p:panelGrid columns="3" style="width:100%; text-align:center">
+					<p:column>
+						<h:outputText value="Ver fecha:" />
+						<p:calendar value="#{usuarioBean.date2}" id="cal"/>
+						<br/>
+						<p:commandButton value="Ver por fecha" id="verDate" ajax="true"
+							update="@form"
+							actionListener="#{usuarioBean.updateObrasDeUsuarioPorFecha}" />
+						<p:commandButton value="Filtrar por obra y fecha" id="dobleFilter"
+							ajax="true" update="@form"
+							actionListener="#{usuarioBean.updateObrasDeUsuarioDoble}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="Ver obra:" />
+						<p:selectOneMenu id="advanced" value="#{usuarioBean.nombreObraFilter}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{usuarioBean.obras}" var="obra"
+							itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						<p:column>
+							<h:outputText value="#{obras.nombreObra}" />
+						</p:column>
+					</p:selectOneMenu>
+						<br/>
+						<p:commandButton value="Ver por obra" id="verObra" ajax="true"
+							update="@form"
+							actionListener="#{usuarioBean.updateObrasDeUsuarioPorObra}" />
+						<p:commandButton value="Filtrar por obra y mes" id="dobleFilter2"
+							ajax="true" update="@form"
+							actionListener="#{usuarioBean.updateObrasDeUsuarioDoble2}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="Ver mes:" />
+						<p:selectOneMenu value="#{usuarioBean.mesObraFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{usuarioBean.meses}" var="mes"
+								itemLabel="#{mes}" itemValue="#{mes}" />
+						</p:selectOneMenu>
+						<br/>
+						<p:commandButton value="Ver por mes" id="verMes" ajax="true"
+							update="@form"
+							actionListener="#{usuarioBean.updateObrasDeUsuarioPorMes}" />
+
+					</p:column>
+				</p:panelGrid>
+				<p:commandButton value="Ver todas" id="ver" ajax="true"
+					update="@form" actionListener="#{usuarioBean.updateObrasDeUsuario}" />
+			</p:panel>
+
+			<p:dataTable var="obras" value="#{usuarioBean.todasObrasUsuario}"
+				id="obras2" editable="true">
+
+				<p:ajax event="rowEdit" listener="#{usuarioBean.onEdit}"
+					update=":form:messages" />
+				<p:ajax event="rowEditCancel" listener="#{usuarioBean.onCancel}"
+					update=":form:messages" />
+
+				<p:column headerText="Fecha" style="width:15%"
+					sortBy="#{obras.fechaSort}">
+							<h:outputText value="#{obras.fecha}" />
+				</p:column>
+
+				<p:column headerText="Obra" style="width:30%"
+					sortBy="#{obras.idObraDeUsuario.obra.nombreObra}">
+					<h:outputText value="#{obras.idObraDeUsuario.obra.nombreObra}" />
+				</p:column>
+
+				<p:column headerText="Horas técnicas" style="width:20%">
+							<h:outputText value="#{obras.horasTecnico}" >
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					<f:facet name="footer">
+							<h:outputText value="Total: #{usuarioBean.totalHorasTecnico}" />
+						</f:facet>
+				</p:column>
+				
+				<p:column headerText="Horas admin./delin." style="width:20%">
+							<h:outputText value="#{obras.horasAdmin}" >
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					<f:facet name="footer">
+							<h:outputText value="Total: #{usuarioBean.totalHorasAdmin}" />
+						</f:facet>
+				</p:column>
+				
+				<p:column headerText="Visita" style="width:20%">
+							<h:outputText value="#{obras.visita}" />
+					<f:facet name="footer">
+							<h:outputText value="Total: #{usuarioBean.totalVisitas}" />
+						</f:facet>
+				</p:column>
+
+				<p:column headerText="Tarea" style="width:24%">
+					<h:outputText value="#{obras.tarea}" />
+				</p:column>
+
+
+			</p:dataTable>
+		</p:panel>
+		<h:panelGrid columns="2">
+				<p:panel header="Exportar datos">
+					<h:commandLink>
+						<h:graphicImage value="/images/excel.png" />
+						<p:dataExporter type="xls" target="obras2"
+							fileName="Datos generales" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink>
+						<h:graphicImage value="/images/pdf.png" />
+						<p:dataExporter type="pdf" target="obras2"
+							fileName="Datos generales" encoding="iso-8859-1" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink type="button">
+						<a href='javascript:window.print(); void 0;'><h:graphicImage value="/images/print.png" /></a>
+					</h:commandLink>
+
+					
+
+				</p:panel>
+			</h:panelGrid>
+	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

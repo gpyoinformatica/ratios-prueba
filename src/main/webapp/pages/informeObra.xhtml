@@ -1,0 +1,214 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Ratios antiguos" id="antiguos">
+			<p:panel header="Búsqueda" id="filtro">
+				<p:panelGrid columns="4" style="width:100%; text-align:left">
+
+					<p:column>
+						<h:outputText value="Mes:" />
+						<p:selectOneMenu value="#{obraBean.mesFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.meses}" var="mes"
+								itemLabel="#{mes}" itemValue="#{mes}" />
+						</p:selectOneMenu>
+					</p:column>
+					
+					<p:column>
+						<h:outputText value="Año:" />
+						<p:inputText value="#{obraBean.yearFilter}"/>
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Código:" />
+						<p:selectOneMenu value="#{obraBean.codigoFilter}"
+							id="obraCodigoSelect">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.obras}" var="obra"
+								itemLabel="#{obra.codigoObra}" itemValue="#{obra.codigoObra}" />
+							<p:ajax listener="#{obraBean.updateObra()}"
+								update="obraNombreSelect" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Obra:" />
+						<p:selectOneMenu id="obraNombreSelect" value="#{obraBean.nombreObraFilter}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{obraBean.obras}" var="obra"
+							itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						<p:column>
+							<h:outputText value="#{obras.nombreObra}" />
+						</p:column>
+						<p:ajax listener="#{obraBean.updateCodigo()}"
+							update="obraCodigoSelect" />
+					</p:selectOneMenu>
+					</p:column>
+
+				</p:panelGrid>
+
+				<p:commandButton value="Ver obra" id="verObras" ajax="true"
+					update="@form" actionListener="#{obraBean.updateObrasDeUsuarioPorObra}" />
+					
+				<p:commandButton value="Ver obra por mes" id="verObrasMes" ajax="true"
+					update="@form" actionListener="#{obraBean.updateObrasDeUsuarioPorMesObra}" />
+				
+				<p:commandButton value="Ver obra por año" id="verObrasYear" ajax="true"
+					update="@form" actionListener="#{obraBean.updateObrasDeUsuarioPorYearObra}" />
+
+			</p:panel>
+
+			<p:panel header="Informe: #{obraBean.nombreObraFilter}" id="exist">
+				<p:dataTable id="obras" var="obras" value="#{obraBean.usuarios}">
+			
+					
+					<p:column>
+					<f:facet name="header">
+							<h:outputText value="Usuario" />
+						</f:facet>
+						<h:outputText value="#{obras.nombreUsuario}" />
+					</p:column>
+					<p:column>
+					<f:facet name="header">
+							<h:outputText value="Horas técnicas" />
+						</f:facet>
+						<h:outputText value="#{obras.horasTecnicasObra}" style="float:right"/>
+						<f:facet name="footer">
+							<h:outputText value="Total: #{obraBean.totalTecnicas} horas." style="float:right"/>
+						</f:facet>
+					</p:column>
+					<p:column>
+					<f:facet name="header">
+							<h:outputText value="Horas admin./delin." />
+						</f:facet>
+						<h:outputText value="#{obras.horasAdminObra}" style="float:right"/>
+						<f:facet name="footer">
+							<h:outputText value="Total: #{obraBean.totalAdmin} horas." style="float:right"/>
+						</f:facet>
+					</p:column>
+					<p:column>
+					<f:facet name="header">
+							<h:outputText value="Visitas" />
+						</f:facet>
+						<h:outputText value="#{obras.visita}" style="float:right"/>
+						<f:facet name="footer">
+							<h:outputText value="Total: #{obraBean.totalVisitas}" style="float:right"/>
+						</f:facet>
+					</p:column>
+					
+					<p:column>
+					<f:facet name="header">
+							<h:outputText value="Horas total" />
+						</f:facet>
+						<h:outputText value="#{obras.horasTotal}" style="float:right"/>
+						<f:facet name="footer">
+							<h:outputText value="Total: #{obraBean.total} horas." style="float:right"/>
+						</f:facet>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:panel header="Exportar datos">
+					<h:commandLink>
+						<h:graphicImage value="/images/excel.png" />
+						<p:dataExporter type="xls" target="obras"
+							fileName="Datos generales" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink>
+						<h:graphicImage value="/images/pdf.png" />
+						<p:dataExporter type="pdf" target="obras"
+							fileName="Datos generales" encoding="iso-8859-1" />
+					</h:commandLink>
+
+					<p:spacer width="30" height="10" />
+
+					<h:commandLink type="button">
+						<a href='javascript:window.print(); void 0;'><h:graphicImage value="/images/print.png" /></a>
+					</h:commandLink>
+
+					
+
+				</p:panel>
+			</h:panelGrid>
+			<p:panel header="Comparativa" id="comp" rendered="#{obraBean.renderPrevision}">
+				<p:dataTable id="obrasComp" var="obras" value="#{obraBean.todasObras}">
+					<p:columnGroup type="header">
+					
+						<p:row>
+							<p:column colspan="6" headerText="#{obraBean.nombreObraFilter}" />
+						</p:row>
+						 <p:row>
+			                <p:column headerText="P. inicial" />
+			                <p:column headerText="P. prevista" />
+			                <p:column headerText="P. variable" />
+			                <p:column headerText="H. anteriores" />
+			                <p:column headerText="H. actuales" />
+			                <p:column headerText="H. total" />
+			            </p:row>
+					</p:columnGroup>
+					
+					<p:column>
+						<h:outputText value="#{obras.pInicial}" style="float:right">
+						<f:convertNumber pattern="#0.00"/>
+							</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obras.pPrevista}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obras.pVariable}" style="float:right">
+						<f:convertNumber pattern="#0.00"/>
+							</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obraBean.horasAnteriores}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obraBean.horasActuales}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="#{obraBean.horasTotalesPrevision}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:panel>
+	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

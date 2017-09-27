@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<style type="text/css">
+
+#login {
+	position: absolute;
+	top: 40%; /* Buscamos el centro horizontal (relativo) del navegador */
+	left: 40%; /* Buscamos el centro vertical (relativo) del navegador */
+}
+
+.ui-panelgrid td, .ui-panelgrid tr
+{
+    border-style: none !important
+}
+
+</style>
+</h:head>
+<h:body>
+
+		<div id="login">
+		<p:panel id="basic" header="Login">
+        <h:form  id="loginFormId" prependId="false">
+        <p:growl id="growl" showDetail="true" sticky="true" />  
+        <p:panelGrid columns="2">
+                        <h:outputText id="outTxtUserNameId" value="Nombre: " name="outTxtUserNameNm"></h:outputText>
+                        <h:inputText id="userName" required="true" value="#{loginMgmtBean.userName}" requiredMessage="Por favor, introduzca su nombre de usuario"></h:inputText>
+                
+                        <h:outputText id="outTxtPasswordId" value="Password: " name="outTxtPasswordNm"></h:outputText>
+                        <h:inputSecret id="password"  required="true" value="#{loginMgmtBean.password}" requiredMessage="Por favor, introduzca SU password" name="inTxtPasswordNm"></h:inputSecret>
+        </p:panelGrid>
+                <br/>
+                <div id="loginBtnPanelId">
+                    <h:commandButton id="btnLoginId" value="Login" action="#{loginMgmtBean.login}" actionListener="#{roleBean.role(loginMgmtBean.userName)}" styleClass="loginPanelBtn" update="growl"></h:commandButton>
+                </div>
+             
+        </h:form>
+        </p:panel>
+    </div>
+    <div>
+        <h:messages></h:messages>
+    </div>
+</h:body>
+</html>

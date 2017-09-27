@@ -1,0 +1,181 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Ratios antiguos" id="antiguos">
+			<p:panel header="Búsqueda" id="filtro">
+				<p:panelGrid columns="5" style="width:100%; text-align:left">
+
+					<p:column>
+						<h:outputText value="Mes:" />
+						<p:selectOneMenu value="#{resumeBean.mesFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{resumeBean.meses}" var="mes"
+								itemLabel="#{mes}" itemValue="#{mes}" />
+						</p:selectOneMenu>
+						<p:commandButton value="Ver por mes" id="verMes" ajax="true"
+							update="@form"
+							actionListener="#{resumeBean.updateObrasDeUsuarioPorMes}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Fecha:" />
+						<p:calendar value="#{resumeBean.date2}" id="cal"/>
+						<p:commandButton value="Ver por fecha" id="verFecha" ajax="true"
+							update="@form"
+							actionListener="#{resumeBean.updateObrasDeUsuarioPorFecha}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Código:" />
+						<p:selectOneMenu value="#{resumeBean.codigoFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{resumeBean.obras}" var="obra"
+								itemLabel="#{obra.codigoObra}" itemValue="#{obra.codigoObra}" />
+							<p:ajax listener="#{resumeBean.updateObra()}" update="@form" />
+						</p:selectOneMenu>
+						<p:commandButton value="Ver por código" id="verCodigo" ajax="true"
+							update="@form"
+							actionListener="#{resumeBean.updateObrasDeUsuarioPorCodigo}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Obra:" />
+						<p:selectOneMenu id="advanced" value="#{resumeBean.nombreObraFilter}"
+					 panelStyle="width:180px" effect="fade"
+						 style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{resumeBean.obras}" var="obra"
+							itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						<p:column>
+							<h:outputText value="#{obras.nombreObra}" />
+						</p:column>
+						<p:ajax listener="#{resumeBean.updateCodigo()}"
+							update="@form" />
+					</p:selectOneMenu>
+						<p:commandButton value="Ver por obra" id="verObra" ajax="true"
+							update="@form"
+							actionListener="#{resumeBean.updateObrasDeUsuarioPorObra}" />
+					</p:column>
+
+					<p:column>
+						<h:outputText value="Usuario:" />
+						<p:selectOneMenu value="#{resumeBean.usuarioFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{resumeBean.todosUsuarios}" var="usuario"
+								itemLabel="#{usuario.nombreUsuario}"
+								itemValue="#{usuario.nombreUsuario}" />
+						</p:selectOneMenu>
+						<p:commandButton value="Ver por usuario" id="verUsuario"
+							ajax="true" update="@form"
+							actionListener="#{resumeBean.updateObrasDeUsuarioPorUsuario}" />
+					</p:column>
+				</p:panelGrid>
+				<p:commandButton value="Filtrar por obra y mes" id="verMesObra"
+					ajax="true" update="@form"
+					actionListener="#{resumeBean.updateObrasDeUsuarioPorObraMes}" />
+
+				<p:commandButton value="Filtrar por obra y usuario"
+					id="verUsuarioObra" ajax="true" update="@form"
+					actionListener="#{resumeBean.updateObrasDeUsuarioPorUsuarioObra}" />
+
+				<p:commandButton value="Filtrar por mes y usuario"
+					id="verUsuarioMes" ajax="true" update="@form"
+					actionListener="#{resumeBean.updateObrasDeUsuarioPorUsuarioMes}" />
+
+				<p:commandButton value="Filtrar por mes, usuario y obra"
+					id="verUsuarioMesObra" ajax="true" update="@form"
+					actionListener="#{resumeBean.updateObrasDeUsuarioPorUsuarioMesObra}" />
+
+				<p:commandButton value="Ver todos" id="verTodos" ajax="true"
+					update="@form" actionListener="#{resumeBean.updateObras}" />
+
+			</p:panel>
+
+
+
+
+			<p:panel header="Obras existentes" id="exist">
+				<p:dataTable var="obras" value="#{resumeBean.obraUsuario}"
+					id="obras2">
+
+					<p:ajax event="rowEdit" listener="#{obraBean.onEdit}"
+						update=":form:messages" />
+					<p:ajax event="rowEditCancel" listener="#{obraBean.onCancel}"
+						update=":form:messages" />
+
+					<p:column headerText="Fecha" style="width:10%"
+						sortBy="#{obras.fechaSort}">
+						<h:outputText value="#{obras.fecha}" />
+					</p:column>
+
+					<p:column headerText="Título" style="width:10%"
+						sortBy="#{obras.idObraDeUsuario.obra.titulo}">
+						<h:outputText value="#{obras.idObraDeUsuario.obra.titulo}" />
+					</p:column>
+
+					<p:column headerText="Obra" style="width:30%"
+						sortBy="#{obras.idObraDeUsuario.obra.nombreObra}">
+						<h:outputText value="#{obras.idObraDeUsuario.obra.nombreObra}" />
+					</p:column>
+
+					<p:column style="width:5%" headerText="Horas tecnicas"
+						sortBy="#{obras.horasTenico}">
+						<h:outputText value="#{obras.horasTecnico}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+					
+					<p:column style="width:5%" headerText="Horas admin./delin."
+						sortBy="#{obras.horasAdmin}">
+						<h:outputText value="#{obras.horasAdmin}" style="float:right">
+						<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+					
+					<p:column style="width:5%" headerText="Visita"
+						sortBy="#{obras.visita}">
+						<h:outputText value="#{obras.visita}" style="float:right"/>
+					</p:column>
+
+					<p:column style="width:27%" headerText="Tarea"
+						sortBy="#{obras.tarea}">
+						<h:outputText value="#{obras.tarea}" />
+					</p:column>
+
+					<p:column style="width:14%" headerText="Usuario"
+						sortBy="#{obras.idObraDeUsuario.usuario.nombreUsuario}">
+						<h:outputText
+							value="#{obras.idObraDeUsuario.usuario.nombreUsuario}" />
+					</p:column>
+
+				</p:dataTable>
+				
+			</p:panel>
+		</p:panel>
+	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

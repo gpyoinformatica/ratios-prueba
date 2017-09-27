@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+	xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      					   http://www.springframework.org/schema/security
+                           http://jax-ws.dev.java.net/spring/core http://jax-ws.dev.java.net/spring/core.xsd
+						   http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/servlet.xsd"
+	default-autowire="byName">
+
+	<context:component-scan base-package="gpyo"/>
+
+    <!-- Use annotation for configuration-->
+    <context:annotation-config/>
+    <context:spring-configured/>
+
+	<bean id="propertyPlaceholder"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
+		<property name="ignoreResourceNotFound" value="false" />
+		<property name="order" value="1" />
+		<property name="locations">
+			<list>
+				<value>classpath:hibernate_mysql.properties</value>
+				<value>classpath:settings.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${db1.hibernate.connection.driver_class}" />
+		<property name="url" value="${db1.hibernate.connection.url}" />
+		<property name="username" value="${db1.hibernate.connection.username}" />
+		<property name="password" value="${db1.hibernate.connection.password}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+
+		<property name="annotatedClasses">
+			<list>
+				<value>gpyo.persistence.entity.admin.Obra</value>
+				<value>gpyo.persistence.entity.admin.Usuario</value>
+				<value>gpyo.persistence.entity.admin.ObraDeUsuario</value>
+				<value>gpyo.persistence.entity.admin.IdObraDeUsuario</value>
+				<value>gpyo.persistence.entity.admin.ObraDeUsuarioHistorica</value>
+				<value>gpyo.persistence.entity.admin.Gasto</value>
+				<value>gpyo.persistence.entity.admin.Ingreso</value>
+				<value>gpyo.persistence.entity.admin.Tesoreria</value>
+				<value>gpyo.persistence.entity.admin.Customer</value>
+				<value>gpyo.persistence.entity.admin.Role</value>
+				<value>gpyo.persistence.entity.admin.Banco</value>
+				<value>gpyo.persistence.entity.admin.Empresa</value>
+			</list>
+		</property>
+
+		<property name="mappingResources">
+			<list>
+				<!-- <value>entity/hibernate/lighting/Section.hbm.xml</value>
+					 <value>entity/hibernate/lighting/SectionFeatures.hbm.xml</value> 
+					 <value>entity/hibernate/lighting/features/Interior.hbm.xml</value> -->
+			</list>
+		</property>
+
+	</bean>
+
+
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<context:annotation-config />
+	<context:component-scan base-package="gpyo" />
+<!-- 	<bean id="secureService" class="org.ploin.utils.service.impl.SecureService" lazy-init="false"> 
+	<property name="min" value="5" /> minimum length 
+	<property name="max" value="20" /> maximum length 
+	<property name="mustContainSmallCharacters" value="false" /> Small letters in the password must be included 
+	<property name="mustContainBigCharacters" value="false" /> capital letters in the password must be included 
+	<property name="mustContainNumbers" value="false" /> numbers must be included in the password 
+	<property name="mustContainSpecialSign" value="false" /> special characters in the password must be included 
+	</bean>
+ -->
+
+</beans>

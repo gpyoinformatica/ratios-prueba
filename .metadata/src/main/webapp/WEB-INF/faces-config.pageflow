@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13726588163100" configfile="/Ratios-3.1/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="page/index.jsf" x="264" y="24" id="pf13740498938303" referenceLink="//@navigationRule.0/@fromViewId|" path="/page/index.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="registerUser.jsf" x="120" y="144" id="pf13740498938305" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/registerUser.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/login.xhtml" id="pf14344416401980" referenceLink="//@navigationRule.1/@navigationCase.5/@toViewId|" outlinks="pf14345309629740 pf14345309629741" inlinks="pf14345309629741 pf14906309497109" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/index.xhtml" id="pf143452389977917" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf149063094971110 pf149063094971111 pf149063094971112 pf149063094971113 pf149063094971114 pf14906309497109" inlinks="pf14345309629740 pf149063094971110 pf149063094971111 pf149063094971113" path="/pages/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="error/error.xhtml" id="pf149063094971115" referenceLink="//@navigationRule.1/@navigationCase.4/@toViewId|" inlinks="pf149063094971112 pf149063094971114" path="/error/error.xhtml"/>
+  <links id="pf14345309629740" target="pf143452389977917" source="pf14344416401980" outcome="correct" fromaction="#{loginMgmtBean.login}"/>
+  <links id="pf14345309629741" target="pf14344416401980" source="pf14344416401980" outcome="incorrect" fromaction="#{loginMgmtBean.login}"/>
+  <links id="pf149063094971110" target="pf143452389977917" source="pf143452389977917" outcome="success" fromaction="#{customerMB.addCustomer}"/>
+  <links id="pf149063094971111" target="pf143452389977917" source="pf143452389977917" outcome="success" fromaction="#{customerMB.updateCustomer(customer)}"/>
+  <links id="pf149063094971112" target="pf149063094971115" source="pf143452389977917" outcome="error" fromaction="#{customerMB.updateCustomer(customer)}"/>
+  <links id="pf149063094971113" target="pf143452389977917" source="pf143452389977917" outcome="success" fromaction="#{customerMB.deleteCustomer(customer)}"/>
+  <links id="pf149063094971114" target="pf149063094971115" source="pf143452389977917" outcome="error" fromaction="#{customerMB.deleteCustomer(customer)}"/>
+  <links id="pf14906309497109" target="pf14344416401980" source="pf143452389977917" outcome="loggedout" redirect="true" fromaction="#{loginMgmtBean.logout}"/>
+</pageflow:Pageflow>

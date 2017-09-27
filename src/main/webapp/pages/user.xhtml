@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Datos del usuario" id="data">
+			<p:panelGrid columns="1" style="width:100%;">
+				<p:row>
+					<h:outputText value="Nombre de usuario: " />
+					<h:outputText value="#{usuarioBean.usuario.nombreUsuario}" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Nombre: " />
+					<h:outputText value="#{usuarioBean.usuario.nombre}" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Apellidos: " />
+					<h:outputText value="#{usuarioBean.usuario.apellido}" />
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:panel header="Editar datos" id="edit">
+			<p:panelGrid columns="1" style="width:100%;">
+				<p:row>
+					<h:outputText value="Nombre de usuario: " />
+					<h:outputText value="#{usuarioBean.usuario.nombreUsuario}"
+						required="true" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Nombre: " />
+					<p:inputText value="#{usuarioBean.usuario.nombre}" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Apellidos: " />
+					<p:inputText value="#{usuarioBean.usuario.apellido}" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Contraseña: " />
+					<p:password value="#{usuarioBean.usuario.password}" required="true" />
+				</p:row>
+				<p:row>
+					<h:outputText value="Repita la contraseña: " />
+					<p:password value="#{usuarioBean.password2}" required="true" />
+				</p:row>
+			</p:panelGrid>
+			<p:commandButton value="Guardar cambios" id="editar" update="@form"
+				ajax="true" action="#{usuarioBean.updateUsuario()}"
+				styleClass="ui-priority-primary" />
+			
+		</p:panel>
+			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

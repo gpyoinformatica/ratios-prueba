@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+        <title>Gastos</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+     
+    <h:body>
+ 
+        <p:dataTable var="obras" value="#{categoriaBean.gastosComprobar}">
+            <p:column headerText="% Cte directo" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteDirecto}">
+					<f:facet name="header">€ Cte directo</f:facet>
+							<h:outputText value="#{obras.perCosteDirecto}" />
+				</p:column>
+				<p:column headerText="Tipo cte estructural" style="width:20%"
+					resizable="true" sortBy="#{obras.tipoCosteEstructural}">
+					<f:facet name="header">Tipo cte estructural</f:facet>
+							<h:outputText value="#{obras.tipoCosteEstructural}" />
+				</p:column>
+				<p:column headerText="% Cte indirecto" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteIndirecto}">
+					<f:facet name="header">€ Cte indirecto</f:facet>
+							<h:outputText value="#{obras.perCosteIndirecto}" />
+				</p:column>
+				<p:column headerText="Obra" style="width:20%" resizable="true"
+					sortBy="#{obras.categoria}">
+					<f:facet name="header">Obra</f:facet>
+							<h:outputText value="#{obras.categoria}" />
+				</p:column>
+				<p:column headerText="C.I.F." style="width:20%" resizable="true"
+					sortBy="#{obras.cif}">
+					<f:facet name="header">C.I.F.</f:facet>
+							<h:outputText value="#{obras.cif}" />
+				</p:column>
+				<p:column headerText="Empresa" style="width:20%" resizable="true"
+					sortBy="#{obras.empresa}">
+					<f:facet name="header">Empresa</f:facet>
+							<h:outputText value="#{obras.empresa}" />
+				</p:column>
+				<p:column headerText="Factura" style="width:20%" resizable="true"
+					sortBy="#{obras.factura}">
+					<f:facet name="header">Factura</f:facet>
+							<h:outputText value="#{obras.factura}" />
+				</p:column>
+				<p:column headerText="Categoría" style="width:20%" resizable="true"
+					sortBy="#{obras.cat}">
+					<f:facet name="header">Categoría</f:facet>
+							<h:outputText value="#{obras.cat}" />
+				</p:column>
+				<p:column headerText="Concepto" style="width:20%" resizable="true"
+					sortBy="#{obras.concepto}">
+					<f:facet name="header">Concepto</f:facet>
+							<h:outputText value="#{obras.concepto}" />
+				</p:column>
+				<p:column headerText="Centro coste" style="width:20%"
+					resizable="true" sortBy="#{obras.centroCoste}">
+					<f:facet name="header">Centro coste</f:facet>
+							<h:outputText value="#{obras.centroCoste}" />
+				</p:column>
+				<p:column headerText="Fecha" style="width:10%"
+					sortBy="#{obras.fechaSort}">
+					<f:facet name="header">Fecha</f:facet>
+							<h:outputText value="#{obras.fecha}" />
+				</p:column>
+				<p:column headerText="Base imponible" style="width:20%"
+					resizable="true" sortBy="#{obras.baseImponible}">
+					<f:facet name="header">Base imponible</f:facet>
+							<h:outputText value="#{obras.baseImponible}" />
+				</p:column>
+				<p:column headerText="IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva}">
+					<f:facet name="header">IVA</f:facet>
+							<h:outputText value="#{obras.iva}" />
+				</p:column>
+				<p:column headerText="2º IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva2}">
+					<f:facet name="header">2º IVA</f:facet>
+							<h:outputText value="#{obras.iva2}" />
+				</p:column>
+				<p:column headerText="IRPF SP" style="width:20%" resizable="true"
+					sortBy="#{obras.irpfSp}">
+					<f:facet name="header">IRPF SP</f:facet>
+							<h:outputText value="#{obras.irpfSp}" />
+				</p:column>
+				<p:column headerText="IRPF Alquiler" style="width:20%"
+					resizable="true" sortBy="#{obras.irpfAlquiler}">
+					<f:facet name="header">IRPF Alquiler</f:facet>
+							<h:outputText value="#{obras.irpfAlquiler}" />
+				</p:column>
+				<p:column headerText="Total" style="width:20%" resizable="true"
+					sortBy="#{obras.cantidad}">
+					<f:facet name="header">Total</f:facet>
+							<h:outputText value="#{obras.cantidad}" />
+				</p:column>
+				<p:column headerText="Pendiente" style="width:20%" resizable="true"
+					sortBy="#{obras.pendiente}">
+					<f:facet name="header">Pendiente</f:facet>
+							<h:outputText value="#{obras.pendiente}" />
+				</p:column>
+				<p:column headerText="Estado" style="width:20%" resizable="true"
+					sortBy="#{obras.estado}">
+					<f:facet name="header">Estado</f:facet>
+							<h:outputText value="#{obras.estado}" />
+				</p:column>
+				<p:column headerText="Vencimiento" style="width:20%"
+					resizable="true" sortBy="#{obras.vencimiento}">
+					<f:facet name="header">Vencimiento</f:facet>
+							<h:outputText value="#{obras.vencimiento}" />
+				</p:column>
+				<p:column headerText="Forma pago" style="width:20%" resizable="true"
+					sortBy="#{obras.formaPago}">
+					<f:facet name="header">Forma pago</f:facet>
+							<h:outputText value="#{obras.formaPago}" />
+				</p:column>
+				<p:column headerText="Pagado" style="width:20%" resizable="true"
+					sortBy="#{obras.pagado}">
+					<f:facet name="header">Pagado</f:facet>
+							<h:outputText value="#{obras.pagado}" />
+				</p:column>
+				<p:column headerText="Fecha pago" style="width:20%" resizable="true"
+					sortBy="#{obras.fechaPago}">
+					<f:facet name="header">Fecha pago</f:facet>
+							<h:outputText value="#{obras.fechaPago}" />
+				</p:column>
+				<p:column headerText="Banco" style="width:20%" resizable="true"
+					sortBy="#{obras.banco}">
+					<f:facet name="header">Banco</f:facet>
+							<h:outputText value="#{obras.banco}" />
+				</p:column>
+
+				<p:column headerText="Previsión" style="width:20%" resizable="true"
+					sortBy="#{obras.prevision}">
+					<f:facet name="header">Previsión</f:facet>
+							<h:outputText value="#{obras.prevision}" />
+				</p:column>
+
+        </p:dataTable>
+    </h:body>
+     
+</html>

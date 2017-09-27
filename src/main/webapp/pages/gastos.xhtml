@@ -1,0 +1,906 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+
+	<title><ui:insert name="title">Gastos</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Introducir los gastos" id="actual">
+			<h:outputText value="Fecha actual: #{categoriaBean.currentDate}" />
+			<br />
+			<p:panelGrid columns="2" style="width:50%;">
+				<f:facet name="header">
+			Gastos
+			</f:facet>
+				<p:column style="width:20%">
+				% Cte directo
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.perCosteDirecto}"
+						id="perCosteDirecto" />
+				</p:column>
+				<p:column style="width:20%">
+				Tipo cte estructural
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu
+						value="#{categoriaBean.gasto.tipoCosteEstructural}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.tipoCostesEstructurales}"
+							var="obra" itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:20%">
+				% Cte indirecto
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.perCosteIndirecto}"
+						id="perCosteIndirecto" />
+				</p:column>
+				<p:column style="width:20%">
+				Obra
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.nombreObra}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.categoriaIngresos}"
+							var="obra" itemLabel="#{obra}" itemValue="#{obra}" />
+						<!-- <p:ajax listener="#{categoriaBean.fechaLimites()}" ajax="true" update="popupCalIntr"/> -->
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:10%">
+					Empresa
+				</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.empresa}" update="cif"
+						immediate="true">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.empresas}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+						<f:ajax process="@this" render="formaPag cif" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:20%">
+					C.I.F.
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.cif}" id="cif" />
+				</p:column>
+				<p:column style="width:15%">
+					Factura
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.factura}" id="factura" />
+				</p:column>
+				<p:column style="width:20%">
+					Categoría
+				</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.gasto.cat}" update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.catGastos}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:15%">
+				Concepto
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.concepto}" id="concepto" />
+				</p:column>
+				<p:column style="width:20%">
+				Centro coste
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.gasto.centroCoste}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.centroCostes}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:20%">
+					Fecha factura
+				</p:column>
+				<p:column>
+					<p:calendar value="#{categoriaBean.fecha}" id="popupCalIntr"
+						locale="es" update="true" />
+				</p:column>
+				<p:column style="width:20%">
+					Fecha recepción de factura
+				</p:column>
+				<p:column>
+					<p:calendar value="#{categoriaBean.fechaRecepcion}"
+						id="popupCalIntrRec" locale="es" update="vencimiento"
+						immediate="true">
+						<p:ajax event="dateSelect" update="vencimiento" />
+						<f:ajax process="@this" render="vencimiento" />
+					</p:calendar>
+				</p:column>
+				<p:column style="width:20%">
+					Base Imponible
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.baseImponible}"
+						id="baseImponible" />
+				</p:column>
+				<p:column style="width:20%">
+					IVA
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.iva}" id="iva" />
+				</p:column>
+				<p:column style="width:20%">
+					2º IVA 
+				</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.iva2}" id="iva2" />
+				</p:column>
+				<p:column style="width:15%">
+				IRPF SP.
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.irpfSpGasto}" id="irpfSp" />
+				</p:column>
+				<p:column style="width:15%">
+				IRPF Alquiler
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.irpfAlquilerGasto}"
+						id="irpfAlquiler" />
+				</p:column>
+
+				<p:column style="width:20%">
+				Vencimiento
+			</p:column>
+				<p:column style="width:20%">
+					<p:calendar value="#{categoriaBean.vencimiento}" id="vencimiento"
+						locale="es" />
+				</p:column>
+				<p:column style="width:20%">
+				Forma pago
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.gasto.formaPago}"
+						update="actual" id="formaPag">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.formaPagos}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column style="width:20%">
+				Pagado
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{categoriaBean.gasto.pagado}" id="pagado" />
+				</p:column>
+				<p:column style="width:20%">
+				Fecha pago
+			</p:column>
+				<p:column>
+					<p:calendar value="#{categoriaBean.fechaPago}" id="fechaPago"
+						locale="es" />
+				</p:column>
+				<p:column style="width:20%">
+				Banco
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{categoriaBean.gasto.banco}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{categoriaBean.bancos}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+
+				<p:column style="width:20%">
+				Previsión
+			</p:column>
+				<p:column style="width:20%">
+						<p:selectOneMenu value="#{categoriaBean.gasto.prevision}"
+							update="actual">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{categoriaBean.prevision}" var="obra"
+								itemLabel="#{obra}" itemValue="#{obra}" />
+						</p:selectOneMenu>
+
+				</p:column>
+
+			</p:panelGrid>
+
+			<p:commandButton value="Guardar gasto" icon="ui-icon-disk" ajax="true"
+				actionListener="#{categoriaBean.viewCarsCustomized}" update = "confirmacions"/>
+		</p:panel>
+
+		<p:dialog header="Confirmación" widgetVar="dialogWidget" id="confirmacions" modal="true"
+			height="auto" width="100%" position="top">
+			<h:outputText value="Lista de previsiones para una empresa en el mes." />
+			<p:dataTable var="obras" value="#{categoriaBean.gastosComprobar}">
+				<p:column headerText="% Cte directo" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteDirecto}">
+					<f:facet name="header">€ Cte directo</f:facet>
+					<h:outputText value="#{obras.perCosteDirecto}" />
+				</p:column>
+				<p:column headerText="Tipo cte estructural" style="width:20%"
+					resizable="true" sortBy="#{obras.tipoCosteEstructural}">
+					<f:facet name="header">Tipo cte estructural</f:facet>
+					<h:outputText value="#{obras.tipoCosteEstructural}" />
+				</p:column>
+				<p:column headerText="% Cte indirecto" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteIndirecto}">
+					<f:facet name="header">€ Cte indirecto</f:facet>
+					<h:outputText value="#{obras.perCosteIndirecto}" />
+				</p:column>
+				<p:column headerText="Obra" style="width:20%" resizable="true"
+					sortBy="#{obras.categoria}">
+					<f:facet name="header">Obra</f:facet>
+					<h:outputText value="#{obras.categoria}" />
+				</p:column>
+				<p:column headerText="C.I.F." style="width:20%" resizable="true"
+					sortBy="#{obras.cif}">
+					<f:facet name="header">C.I.F.</f:facet>
+					<h:outputText value="#{obras.cif}" />
+				</p:column>
+				<p:column headerText="Empresa" style="width:20%" resizable="true"
+					sortBy="#{obras.empresa}">
+					<f:facet name="header">Empresa</f:facet>
+					<h:outputText value="#{obras.empresa}" />
+				</p:column>
+				<p:column headerText="Factura" style="width:20%" resizable="true"
+					sortBy="#{obras.factura}">
+					<f:facet name="header">Factura</f:facet>
+					<h:outputText value="#{obras.factura}" />
+				</p:column>
+				<p:column headerText="Categoría" style="width:20%" resizable="true"
+					sortBy="#{obras.cat}">
+					<f:facet name="header">Categoría</f:facet>
+					<h:outputText value="#{obras.cat}" />
+				</p:column>
+				<p:column headerText="Concepto" style="width:20%" resizable="true"
+					sortBy="#{obras.concepto}">
+					<f:facet name="header">Concepto</f:facet>
+					<h:outputText value="#{obras.concepto}" />
+				</p:column>
+				<p:column headerText="Centro coste" style="width:20%"
+					resizable="true" sortBy="#{obras.centroCoste}">
+					<f:facet name="header">Centro coste</f:facet>
+					<h:outputText value="#{obras.centroCoste}" />
+				</p:column>
+				<p:column headerText="Fecha" style="width:10%"
+					sortBy="#{obras.fechaSort}">
+					<f:facet name="header">Fecha</f:facet>
+					<h:outputText value="#{obras.fecha}" />
+				</p:column>
+				<p:column headerText="Base imponible" style="width:20%"
+					resizable="true" sortBy="#{obras.baseImponible}">
+					<f:facet name="header">Base imponible</f:facet>
+					<h:outputText value="#{obras.baseImponible}" />
+				</p:column>
+				<p:column headerText="IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva}">
+					<f:facet name="header">IVA</f:facet>
+					<h:outputText value="#{obras.iva}" />
+				</p:column>
+				<p:column headerText="2º IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva2}">
+					<f:facet name="header">2º IVA</f:facet>
+					<h:outputText value="#{obras.iva2}" />
+				</p:column>
+				<p:column headerText="IRPF SP" style="width:20%" resizable="true"
+					sortBy="#{obras.irpfSp}">
+					<f:facet name="header">IRPF SP</f:facet>
+					<h:outputText value="#{obras.irpfSp}" />
+				</p:column>
+				<p:column headerText="IRPF Alquiler" style="width:20%"
+					resizable="true" sortBy="#{obras.irpfAlquiler}">
+					<f:facet name="header">IRPF Alquiler</f:facet>
+					<h:outputText value="#{obras.irpfAlquiler}" />
+				</p:column>
+				<p:column headerText="Total" style="width:20%" resizable="true"
+					sortBy="#{obras.cantidad}">
+					<f:facet name="header">Total</f:facet>
+					<h:outputText value="#{obras.cantidad}" />
+				</p:column>
+				<p:column headerText="Pendiente" style="width:20%" resizable="true"
+					sortBy="#{obras.pendiente}">
+					<f:facet name="header">Pendiente</f:facet>
+					<h:outputText value="#{obras.pendiente}" />
+				</p:column>
+				<p:column headerText="Estado" style="width:20%" resizable="true"
+					sortBy="#{obras.estado}">
+					<f:facet name="header">Estado</f:facet>
+					<h:outputText value="#{obras.estado}" />
+				</p:column>
+				<p:column headerText="Vencimiento" style="width:20%"
+					resizable="true" sortBy="#{obras.vencimiento}">
+					<f:facet name="header">Vencimiento</f:facet>
+					<h:outputText value="#{obras.vencimiento}" />
+				</p:column>
+				<p:column headerText="Forma pago" style="width:20%" resizable="true"
+					sortBy="#{obras.formaPago}">
+					<f:facet name="header">Forma pago</f:facet>
+					<h:outputText value="#{obras.formaPago}" />
+				</p:column>
+				<p:column headerText="Pagado" style="width:20%" resizable="true"
+					sortBy="#{obras.pagado}">
+					<f:facet name="header">Pagado</f:facet>
+					<h:outputText value="#{obras.pagado}" />
+				</p:column>
+				<p:column headerText="Fecha pago" style="width:20%" resizable="true"
+					sortBy="#{obras.fechaPago}">
+					<f:facet name="header">Fecha pago</f:facet>
+					<h:outputText value="#{obras.fechaPago}" />
+				</p:column>
+				<p:column headerText="Banco" style="width:20%" resizable="true"
+					sortBy="#{obras.banco}">
+					<f:facet name="header">Banco</f:facet>
+					<h:outputText value="#{obras.banco}" />
+				</p:column>
+
+				<p:column headerText="Previsión" style="width:20%" resizable="true"
+					sortBy="#{obras.prevision}">
+					<f:facet name="header">Previsión</f:facet>
+					<h:outputText value="#{obras.prevision}" />
+				</p:column>
+
+			</p:dataTable>
+			
+			<p:commandButton value="Guardar gasto" id="saveGasto" ajax="true"
+				update="@form" actionListener="#{categoriaBean.saveGasto}">
+			</p:commandButton>
+			
+			<p:commandButton value="Cancelar" id="denied" ajax="true"
+				update="@form" actionListener="#{categoriaBean.cancelarGuardado}">
+			</p:commandButton>
+			
+		</p:dialog>
+
+
+		<p:panel header="Filtros" id="filtros">
+			<p:accordionPanel activeIndex="-1">
+				<p:tab title="Búsqueda">
+					<p:panelGrid columns="3" style="width:100%; text-align:left">
+						<p:column>
+							<h:outputText value="Insertar fecha factura inferior:" />
+							<p:calendar value="#{categoriaBean.fechaMinimaFiltroFactura}" />
+							<br />
+							<h:outputText value="Insertar fecha factura superior:" />
+							<p:calendar value="#{categoriaBean.fechaMaximaFiltroFactura}" />
+							<br />
+							<p:commandButton value="Filtro por fechas factura"
+								id="verFechFiltro" ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorFechasFactura}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar fecha vencimiento inferior:" />
+							<p:calendar value="#{categoriaBean.fechaMinimaFiltroVencimiento}" />
+							<br />
+							<h:outputText value="Insertar fecha vencimiento superior:" />
+							<p:calendar value="#{categoriaBean.fechaMaximaFiltroVencimiento}" />
+							<br />
+							<p:commandButton value="Filtro por fechas vencimiento"
+								id="verFechFiltroVenc" ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorFechasVencimiento}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar forma de pago:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroFormaPago}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.formaPagos}" var="obra" 
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por forma de pago" id="verFormaPago"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorFormaPago}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar estado:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroEstado}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.estados}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por estado" id="verEstado"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorEstado}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar categoria:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroCategoria}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.catGastos}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por categoria" id="verCategoria"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorCategoria}" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="Insertar obra:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroObra}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.obras}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por obra" id="verObra" ajax="true"
+								update="@form" actionListener="#{categoriaBean.filtroPorObra}" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="Insertar mes factura:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroMesFactura}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.meses}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por mes" id="verMes" ajax="true"
+								update="@form"
+								actionListener="#{categoriaBean.filtroPorMesFactura}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar mes vencimiento:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroMes}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.meses}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por mes" id="verMesVencimiento"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorMesVencimiento}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar trimestre:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroTrimestre}">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.trimestres}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por trimestre" id="verTrimestre"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorTrimestre}" />
+						</p:column>
+
+						<p:column>
+							<h:outputText value="Insertar concepto:" />
+							<p:inputText value="#{categoriaBean.filtroConcepto}" />
+							<br />
+							<p:commandButton value="Ver por concepto" id="verConc"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.filtroPorConcepto}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar empresa:" />
+							<p:inputText value="#{categoriaBean.filtroEmpresa}" />
+							<br />
+							<p:commandButton value="Ver por empresa" id="verEmp" ajax="true"
+								update="@form"
+								actionListener="#{categoriaBean.filtroPorEmpresa}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Insertar banco:" />
+							<p:selectOneMenu value="#{categoriaBean.filtroBanco}"
+								update="actual">
+								<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+								<f:selectItems value="#{categoriaBean.bancos}" var="obra"
+									itemLabel="#{obra}" itemValue="#{obra}" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton value="Ver por banco" id="verBanco" ajax="true"
+								update="@form" actionListener="#{categoriaBean.filtroPorBanco}" />
+
+
+							<p:commandButton value="Corregir gastos" id="corGastos"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.corregirGastos}" />
+
+							<p:commandButton value="Corregir ingresos" id="corIngresos"
+								ajax="true" update="@form"
+								actionListener="#{categoriaBean.corregirIngresos}" />
+						</p:column>
+					</p:panelGrid>
+				</p:tab>
+			</p:accordionPanel>
+		</p:panel>
+
+		<p:panel header="Gastos" id="gastos1" style="width:200%">
+			<p:dataTable var="obras" value="#{categoriaBean.gastos}" id="obras"
+				editable="true" resizableColumns="true" style="width:100%">
+
+				<p:ajax event="rowEdit" listener="#{categoriaBean.onEditGasto}"
+					update=":form:messages" />
+				<p:ajax event="rowEditCancel"
+					listener="#{categoriaBean.onCancelGasto}" update=":form:messages" />
+
+				<p:column headerText="% Cte directo" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteDirecto}">
+					<f:facet name="header">€ Cte directo</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.perCosteDirecto}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.perCosteDirecto}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Tipo cte estructural" style="width:20%"
+					resizable="true" sortBy="#{obras.tipoCosteEstructural}">
+					<f:facet name="header">Tipo cte estructural</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.tipoCosteEstructural}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.tipoCosteEstructural}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="% Cte indirecto" style="width:20%"
+					resizable="true" sortBy="#{obras.perCosteIndirecto}">
+					<f:facet name="header">€ Cte indirecto</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.perCosteIndirecto}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.perCosteIndirecto}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Obra" style="width:20%" resizable="true"
+					sortBy="#{obras.categoria}">
+					<f:facet name="header">Obra</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.categoria}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.categoria}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="C.I.F." style="width:20%" resizable="true"
+					sortBy="#{obras.cif}">
+					<f:facet name="header">C.I.F.</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.cif}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.cif}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Empresa" style="width:20%" resizable="true"
+					sortBy="#{obras.empresa}">
+					<f:facet name="header">Empresa</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.empresa}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.empresa}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Factura" style="width:20%" resizable="true"
+					sortBy="#{obras.factura}">
+					<f:facet name="header">Factura</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.factura}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.factura}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Categoría" style="width:20%" resizable="true"
+					sortBy="#{obras.cat}">
+					<f:facet name="header">Categoría</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.cat}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.cat}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Concepto" style="width:20%" resizable="true"
+					sortBy="#{obras.concepto}">
+					<f:facet name="header">Concepto</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.concepto}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.concepto}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Centro coste" style="width:20%"
+					resizable="true" sortBy="#{obras.centroCoste}">
+					<f:facet name="header">Centro coste</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.centroCoste}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.centroCoste}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Fecha" style="width:10%"
+					sortBy="#{obras.fechaSort}">
+					<f:facet name="header">Fecha</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.fecha}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.fecha}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Base imponible" style="width:20%"
+					resizable="true" sortBy="#{obras.baseImponible}">
+					<f:facet name="header">Base imponible</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.baseImponible}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.baseImponible}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva}">
+					<f:facet name="header">IVA</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.iva}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.iva}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="2º IVA" style="width:20%" resizable="true"
+					sortBy="#{obras.iva2}">
+					<f:facet name="header">2º IVA</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.iva2}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.iva2}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="IRPF SP" style="width:20%" resizable="true"
+					sortBy="#{obras.irpfSp}">
+					<f:facet name="header">IRPF SP</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.irpfSp}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.irpfSp}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="IRPF Alquiler" style="width:20%"
+					resizable="true" sortBy="#{obras.irpfAlquiler}">
+					<f:facet name="header">IRPF Alquiler</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.irpfAlquiler}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.irpfAlquiler}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Total" style="width:20%" resizable="true"
+					sortBy="#{obras.cantidad}">
+					<f:facet name="header">Total</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.cantidad}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.cantidad}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Pendiente" style="width:20%" resizable="true"
+					sortBy="#{obras.pendiente}">
+					<f:facet name="header">Pendiente</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.pendiente}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.pendiente}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Estado" style="width:20%" resizable="true"
+					sortBy="#{obras.estado}">
+					<f:facet name="header">Estado</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.estado}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.estado}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Vencimiento" style="width:20%"
+					resizable="true" sortBy="#{obras.vencimiento}">
+					<f:facet name="header">Vencimiento</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.vencimiento}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.vencimiento}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Forma pago" style="width:20%" resizable="true"
+					sortBy="#{obras.formaPago}">
+					<f:facet name="header">Forma pago</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.formaPago}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.formaPago}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Pagado" style="width:20%" resizable="true"
+					sortBy="#{obras.pagado}">
+					<f:facet name="header">Pagado</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.pagado}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.pagado}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Fecha pago" style="width:20%" resizable="true"
+					sortBy="#{obras.fechaPago}">
+					<f:facet name="header">Fecha pago</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.fechaPago}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.fechaPago}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Banco" style="width:20%" resizable="true"
+					sortBy="#{obras.banco}">
+					<f:facet name="header">Banco</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.banco}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.banco}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Previsión" style="width:20%" resizable="true"
+					sortBy="#{obras.prevision}">
+					<f:facet name="header">Previsión</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.prevision}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{obras.prevision}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column style="width:5%" headerText="Editar">
+					<p:rowEditor />
+				</p:column>
+
+				<p:column style="width:5%" headerText="Borrar">
+					<p:commandLink id="trash" update="@form"
+						actionListener="#{categoriaBean.deleteGasto(obras)}"
+						styleClass="ui-icon ui-icon-trash" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:commandLink id="xls" ajax="false">
+				<p:graphicImage value="/images/excel.png" />
+				<pe:exporter type="xlsx" target="obras" fileName="Gastos"
+					datasetPadding="4" />
+
+			</p:commandLink>
+
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,289 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Ratios antiguos" id="antiguos">
+			<p:panel header="Búsqueda" id="filtro">
+				<p:panelGrid columns="3" style="width:100%; text-align:center">
+
+					<p:column>
+						<h:outputText value="Ver código:" />
+						<p:selectOneMenu value="#{obraBean.codigoFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.obrasCodigo}" var="obra"
+								itemLabel="#{obra}" itemValue="#{obra}" />
+						</p:selectOneMenu>
+						<br />
+						<p:commandButton value="Ver por código" id="verObraCodigo"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioPorCodigo}" />
+
+					</p:column>
+					<p:column>
+						<h:outputText value="Ver título:" />
+						<p:selectOneMenu value="#{obraBean.tituloFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.obrasTitulo}" var="obra"
+								itemLabel="#{titulo}" itemValue="#{titulo}" />
+						</p:selectOneMenu>
+						<br />
+						<p:commandButton value="Ver por título" id="verObraTitulo"
+							ajax="true" update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioPorTitulo}" />
+
+					</p:column>
+					<p:column>
+						<h:outputText value="Ver obra:" />
+						<p:selectOneMenu value="#{obraBean.nombreObraFilter}">
+							<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+							<f:selectItems value="#{obraBean.obras}" var="obra"
+								itemLabel="#{obra.nombreObra}" itemValue="#{obra.nombreObra}" />
+						</p:selectOneMenu>
+						<br />
+						<p:commandButton value="Ver por obra" id="verObra" ajax="true"
+							update="@form"
+							actionListener="#{obraBean.updateObrasDeUsuarioPorObra}" />
+					</p:column>
+				</p:panelGrid>
+				<p:commandButton value="Ver todos" id="verTodos" ajax="true"
+					update="obras2" action="#{obraBean.showObras()}" />
+			</p:panel>
+
+
+			<p:panel header="Introducir obra" id="introdObra">
+				<p:panelGrid columns="2" style="width:50%;">
+					<f:facet name="header">
+			Obra
+		</f:facet>
+					<p:row>
+						<h:outputText value="Código" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.codigoObra}" id="code" />
+					</p:row>
+					<p:row>
+						<h:outputText value="Título" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.titulo}" id="titulo"
+							style="width:100%;" />
+					</p:row>
+					<p:row>
+						<h:outputText value="Nombre de la obra" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.nombreObra}" id="nombreObra"
+							style="width:100%;" />
+					</p:row>
+					<p:row>
+						<h:outputText value="Presupuesto sin IVA" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.presupuestoSinIVA}"
+							id="presupuesto" />
+					</p:row>
+					<p:row>
+						<h:outputText value="IVA" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.iva}" id="iva" />
+					</p:row>
+					<p:row>
+						<h:outputText value="P. inicial" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.pInicial}" id="pInicial" />
+					</p:row>
+					<p:row>
+						<h:outputText value="P. prevista" style="float:right" />
+					</p:row>
+
+					<p:row>
+						<p:inputText value="#{obraBean.obra.pPrevista}" id="pPrevista" />
+					</p:row>
+					<p:row>
+						<h:outputText value="P. variable" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:inputText value="#{obraBean.obra.pVariable}" id="pVariable" />
+					</p:row>
+					<p:row>
+						<h:outputText value="Fecha inicio" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:calendar value="#{obraBean.fecha}" id="fechaObra" />
+					</p:row>
+					<p:row>
+						<h:outputText value="Fecha fin" style="float:right" />
+					</p:row>
+					<p:row>
+						<p:calendar value="#{obraBean.fechaFin}" id="fechaFinObra" />
+					</p:row>
+
+
+
+				</p:panelGrid>
+				<p:commandButton value="Guardar obra" id="saveObra" ajax="true"
+					update="@form" actionListener="#{obraBean.saveObra}" />
+			</p:panel>
+
+
+			<p:panel header="Borrar obra" id="borrarObra">
+				<p:panelGrid columns="1" style="width:100%;">
+
+					<p:row style="width:15%;">
+						Nombre de la obra: 
+						<p:inputText value="#{obraBean.nombreObraDelete}"
+							id="nombreObraBorrar" />
+					</p:row>
+				</p:panelGrid>
+				<p:commandButton value="Borrar obra" onclick="confirmation.show()"
+					id="borraObra" update="messages" />
+			</p:panel>
+
+
+			<p:panel header="Obras existentes" id="exist">
+				<p:dataTable var="obras" value="#{obraBean.todasObras}" id="obras2"
+					editable="true">
+
+					<p:ajax event="rowEdit" listener="#{obraBean.onEdit}"
+						update=":form:messages" />
+					<p:ajax event="rowEditCancel" listener="#{obraBean.onCancel}"
+						update=":form:messages" />
+
+					<p:column headerText="Código" style="width:10%">
+
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.codigoObra}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.codigoObra}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Título" style="width:15%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.titulo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.titulo}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nombre de la obra" style="width:31%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.nombreObra}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.nombreObra}" style="width:100%"
+									label="Year" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="P. inicial" style="width:10%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.pInicial}" style="float:right">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.pInicial}" style="width:100%"
+									label="pInicial" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="P. prevista" style="width:10%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.pPrevista}" style="float:right">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.pPrevista}" style="width:100%"
+									label="pPrevista" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="P. variable" style="width:10%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.pVariable}" style="float:right">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.pVariable}" style="width:100%"
+									label="pVariable" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Fecha" style="width:10%">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{obras.fecha}" style="float:right"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{obras.fecha}" style="width:100%"
+									label="Year" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:6%" headerText="Editar">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:panel>
+		<p:dialog header="Está seguro?" widgetVar="confirmation" width="400"
+			height="auto" position="300, 400">
+			<h:outputText
+				value="Si borra la obra se borrarán también los ratios asociados a ella. Se recomienda guardar los ratios antes de borrar la obra." />
+			<br />
+			<br />
+			<p:commandButton value="Si" actionListener="#{obraBean.deleteObra}"
+				oncomplete="confirmation.hide()" update="@form" process="@this"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="No" oncomplete="confirmation.hide()"
+				process="@this" styleClass="ui-confirmdialog-no"
+				icon="ui-icon-close" />
+		</p:dialog>
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

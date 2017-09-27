@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<title><ui:insert name="title">Ratios</ui:insert></title>
+
+	<link href="/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Datos de los usuarios" id="usuarios">
+			<p:dataTable var="usuario" value="#{usuarioBean.todosUsuarios}"
+				editable="true">
+
+				<p:ajax event="rowEdit" listener="#{usuarioBean.onEdit}"
+					update=":form:messages" />
+				<p:ajax event="rowEditCancel" listener="#{usuarioBean.onCancel}"
+					update=":form:messages" />
+
+				<p:column headerText="Nombre usuario">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{usuario.nombreUsuario}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{usuario.nombreUsuario}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Nombre">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{usuario.nombre}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{usuario.nombre}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Apellidos">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{usuario.apellido}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{usuario.apellido}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Contraseña">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{usuario.password}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{usuario.password}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Rol">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{usuario.role.role}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{usuario.role.role}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:6%" headerText="Editar">
+					<p:rowEditor />
+				</p:column>
+
+				<p:column style="width:6%" headerText="Borrar">
+					<p:commandLink id="trash2" update="@form"
+						actionListener="#{usuarioBean.deleteUsuario(usuario)}"
+						styleClass="ui-icon ui-icon-trash" />
+				</p:column>
+				<p:column style="width:6%" headerText="Ver ratios">
+					<p:commandLink id="ratios" update="@form"
+						action="#{usuarioBean.showRatios(usuario)}"
+						actionListener="#{loaderBean.openPage('/page/adminSeeRatio.xhtml')}"
+						styleClass="ui-icon ui-icon-zoomin" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+			<p:dialog  widgetVar="statusDialog" header="Cargando" resizable="false" 
+					draggable="false" closable="false" position="center top" styleClass="disable-scroll">  
+				<p:graphicImage value="/images/loading.gif" />  
+			</p:dialog> 
+	</h:form>
+</h:body>
+</html>

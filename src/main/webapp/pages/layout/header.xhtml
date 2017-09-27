@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<script type="text/javascript">  
+    function handleLoginRequest(xhr, status, args) {  
+        if(args.validationFailed || !args.loggedIn) {  
+            dlg.jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            dlg.hide();  
+            $('#loginLink').fadeOut();  
+        }  
+    }  
+</script> 
+</h:head>
+<h:body>
+	<f:loadBundle basename="gui.labels" var="labels" />
+ <div id="logoCetucu"><h:outputText value="Ratios" style="font-family:'century gothic',verdana,arial,helvetica,sans-serif"/><br/>
+	
+
+	 </div>
+
+	
+
+	<div id="right_zone">
+		
+
+	
+		<div id="logo_language">
+			<div id="logo">
+				<h:graphicImage value="/images/logo_gpyo2.jpg"/>
+			</div>
+						
+			
+			
+			<div id="sep2" class="littleMenu">
+			<h:form>
+				<p:commandButton value="Salir" id="logout" action="#{loginMgmtBean.logout}"/>
+			</h:form>
+		</div>
+			
+		</div>
+		
+		
+	</div>
+</h:body>
+</html>

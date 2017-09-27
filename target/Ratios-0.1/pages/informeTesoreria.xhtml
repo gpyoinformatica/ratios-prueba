@@ -1,0 +1,637 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+
+	<title><ui:insert name="title">Facturas</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script>
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</script>
+
+	<style>
+.highlight1 {
+	background: #A52A2A !important;
+	font-weight: bold !important;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+
+		<p:panel header="Seleccionar" id="actual">
+			<p:panelGrid columns="2" style="width:100%;">
+				<f:facet name="header">
+			Tesorería
+			</f:facet>
+
+				<p:column style="width:20%">
+				Obra
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{informeTesoreriaBean.nombreObra}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{informeTesoreriaBean.nombreObras}"
+							var="obra" itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+
+				<p:column style="width:20%">
+				Tipo de informe
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{informeTesoreriaBean.tipoInfo}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{informeTesoreriaBean.tipoInfos}"
+							var="obra" itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+
+				<p:column style="width:20%">
+				Tipo de factura
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{informeTesoreriaBean.tipoFecha}"
+						update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{informeTesoreriaBean.tipoFechas}"
+							var="obra" itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+
+
+
+				<p:column style="width:20%">
+				Año
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{informeTesoreriaBean.year}" id="pagado" />
+				</p:column>
+
+			</p:panelGrid>
+			<p:commandButton value="Ver tesorería" id="save" ajax="true"
+				update="@form" actionListener="#{informeTesoreriaBean.verTesoreria}">
+			</p:commandButton>
+		</p:panel>
+
+		<p:panel header="Ingresos" id="tesoreria">
+			<p:dataTable var="obras" value="#{informeTesoreriaBean.ingresos}"
+				id="obras" editable="true" resizableColumns="true"
+				style="width:100%">
+
+				<f:facet name="header">
+					<h:outputText value="#{informeTesoreriaBean.year}" />
+				</f:facet>
+				<p:column style="width:30%" headerText=" ">
+					<f:facet name="header">Obra</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.titulos}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.titulos}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.eneroPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Enero">
+					<f:facet name="header">Enero</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.enero}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.enero}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.febreroPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Febrero">
+					<f:facet name="header">Febrero</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.febrero}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.febrero}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.marzoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Marzo">
+					<f:facet name="header">Marzo</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.marzo}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.marzo}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.abrilPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Abril">
+					<f:facet name="header">Abril</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.abril}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.abril}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.mayoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Mayo">
+					<f:facet name="header">Mayo</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.mayo}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.mayo}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.junioPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Junio">
+					<f:facet name="header">Junio</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.junio}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.junio}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.julioPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Julio">
+					<f:facet name="header">Julio</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.julio}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.julio}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.agostoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Agosto">
+					<f:facet name="header">Agosto</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.agosto}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.agosto}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.septiembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Septiembre">
+					<f:facet name="header">Septiembre</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.septiembre}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.septiembre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.octubrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Octubre">
+					<f:facet name="header">Octubre</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.octubre}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.octubre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.noviembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Noviembre">
+					<f:facet name="header">Noviembre</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.noviembre}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.noviembre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.diciembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Diciembre">
+					<f:facet name="header">Diciembre</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.diciembre}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.diciembre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:10%" headerText="Total"
+					rendered="#{!tesoreriaBean.showSecondYear}">
+					<f:facet name="header">Total</f:facet>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{obras.total}">
+								<f:convertNumber pattern="#,##0.00" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{obras.total}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:5%" headerText="Editar">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Gastos" id="gastos">
+			<p:dataTable var="obras" value="#{informeTesoreriaBean.gastos}"
+				id="gast" resizableColumns="true" style="width:100%"
+				selectionMode="single"
+				selection="#{informeTesoreriaBean.tesoreriaSeleccionada}"
+				rowKey="#{obras.id_tesoreria}">
+				<p:ajax event="rowSelect" update=":form:carDetail" oncomplete="carDialog.show()" listener="#{informeTesoreriaBean.showDesplegable2}"/>
+				<f:facet name="header">
+					<h:outputText value="#{informeTesoreriaBean.year}" />
+				</f:facet>
+				<p:column style="width:30%" headerText=" ">
+					<f:facet name="header">Categoria</f:facet>
+					<h:outputText value="#{obras.titulos}" />
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.eneroPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Enero">
+					<f:facet name="header">Enero</f:facet>
+					<h:outputText value="#{obras.enero}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.febreroPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Febrero">
+					<f:facet name="header">Febrero</f:facet>
+					<h:outputText value="#{obras.febrero}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.marzoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Marzo">
+					<f:facet name="header">Marzo</f:facet>
+					<h:outputText value="#{obras.marzo}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.abrilPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Abril">
+					<f:facet name="header">Abril</f:facet>
+					<h:outputText value="#{obras.abril}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.mayoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Mayo">
+					<f:facet name="header">Mayo</f:facet>
+					<h:outputText value="#{obras.mayo}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.junioPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Junio">
+					<f:facet name="header">Junio</f:facet>
+					<h:outputText value="#{obras.junio}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.julioPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Julio">
+					<f:facet name="header">Julio</f:facet>
+					<h:outputText value="#{obras.julio}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.agostoPrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Agosto">
+					<f:facet name="header">Agosto</f:facet>
+					<h:outputText value="#{obras.agosto}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.septiembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Septiembre">
+					<f:facet name="header">Septiembre</f:facet>
+					<h:outputText value="#{obras.septiembre}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.octubrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Octubre">
+					<f:facet name="header">Octubre</f:facet>
+					<h:outputText value="#{obras.octubre}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.noviembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Noviembre">
+					<f:facet name="header">Noviembre</f:facet>
+					<h:outputText value="#{obras.noviembre}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%" headerText="">
+					<h:outputText value="#{obras.diciembrePrev}" />
+				</p:column>
+				<p:column style="width:10%" headerText="Diciembre">
+					<f:facet name="header">Diciembre</f:facet>
+					<h:outputText value="#{obras.diciembre}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:10%" headerText="Total"
+					rendered="#{!tesoreriaBean.showSecondYear}">
+					<f:facet name="header">Total</f:facet>
+					<h:outputText value="#{obras.total}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog header="Gastos detallados" widgetVar="carDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="carDetail" style="text-align:center;">
+					<p:dataTable var="obras2" value="#{informeTesoreriaBean.gastosDesplegables}" id="obrasDesplegables"
+				editable="true" resizableColumns="true" style="width:100%">
+
+				<p:column headerText="% Cte directo" style="width:20%"
+					resizable="true" sortBy="#{obras2.perCosteDirecto}">
+					<f:facet name="header">€ Cte directo</f:facet>
+							<h:outputText value="#{obras2.perCosteDirecto}" />
+				</p:column>
+				<p:column headerText="Tipo cte estructural" style="width:20%"
+					resizable="true" sortBy="#{obras2.tipoCosteEstructural}">
+					<f:facet name="header">Tipo cte estructural</f:facet>
+							<h:outputText value="#{obras2.tipoCosteEstructural}" />
+				</p:column>
+				<p:column headerText="% Cte indirecto" style="width:20%"
+					resizable="true" sortBy="#{obras2.perCosteIndirecto}">
+					<f:facet name="header">€ Cte indirecto</f:facet>
+							<h:outputText value="#{obras2.perCosteIndirecto}" />
+				</p:column>
+				<p:column headerText="Obra" style="width:20%" resizable="true"
+					sortBy="#{obras2.categoria}">
+					<f:facet name="header">Obra</f:facet>
+							<h:outputText value="#{obras2.categoria}" />
+				</p:column>
+				<p:column headerText="C.I.F." style="width:20%" resizable="true"
+					sortBy="#{obras2.cif}">
+					<f:facet name="header">C.I.F.</f:facet>
+							<h:outputText value="#{obras2.cif}" />
+				</p:column>
+				<p:column headerText="Empresa" style="width:20%" resizable="true"
+					sortBy="#{obras2.empresa}">
+					<f:facet name="header">Empresa</f:facet>
+							<h:outputText value="#{obras2.empresa}" />
+				</p:column>
+				<p:column headerText="Factura" style="width:20%" resizable="true"
+					sortBy="#{obras2.factura}">
+					<f:facet name="header">Factura</f:facet>
+							<h:outputText value="#{obras2.factura}" />
+				</p:column>
+				<p:column headerText="Categoría" style="width:20%" resizable="true"
+					sortBy="#{obras2.cat}">
+					<f:facet name="header">Categoría</f:facet>
+							<h:outputText value="#{obras2.cat}" />
+				</p:column>
+				<p:column headerText="Concepto" style="width:20%" resizable="true"
+					sortBy="#{obras2.concepto}">
+					<f:facet name="header">Concepto</f:facet>
+							<h:outputText value="#{obras2.concepto}" />
+				</p:column>
+				<p:column headerText="Centro coste" style="width:20%"
+					resizable="true" sortBy="#{obras2.centroCoste}">
+					<f:facet name="header">Centro coste</f:facet>
+							<h:outputText value="#{obras2.centroCoste}" />
+				</p:column>
+				<p:column headerText="Fecha" style="width:10%"
+					sortBy="#{obras2.fechaSort}">
+					<f:facet name="header">Fecha</f:facet>
+							<h:outputText value="#{obras2.fecha}" />
+				</p:column>
+				<p:column headerText="Base imponible" style="width:20%"
+					resizable="true" sortBy="#{obras2.baseImponible}">
+					<f:facet name="header">Base imponible</f:facet>
+							<h:outputText value="#{obras2.baseImponible}" />
+				</p:column>
+				<p:column headerText="IVA" style="width:20%" resizable="true"
+					sortBy="#{obras2.iva}">
+					<f:facet name="header">IVA</f:facet>
+							<h:outputText value="#{obras2.iva}" />
+				</p:column>
+				<p:column headerText="2º IVA" style="width:20%" resizable="true"
+					sortBy="#{obras2.iva2}">
+					<f:facet name="header">2º IVA</f:facet>
+							<h:outputText value="#{obras2.iva2}" />
+				</p:column>
+				<p:column headerText="IRPF SP" style="width:20%" resizable="true"
+					sortBy="#{obras2.irpfSp}">
+					<f:facet name="header">IRPF SP</f:facet>
+							<h:outputText value="#{obras2.irpfSp}" />
+				</p:column>
+				<p:column headerText="IRPF Alquiler" style="width:20%"
+					resizable="true" sortBy="#{obras2.irpfAlquiler}">
+					<f:facet name="header">IRPF Alquiler</f:facet>
+							<h:outputText value="#{obras2.irpfAlquiler}" />
+				</p:column>
+				<p:column headerText="Total" style="width:20%" resizable="true"
+					sortBy="#{obras2.cantidad}">
+					<f:facet name="header">Total</f:facet>
+							<h:outputText value="#{obras2.cantidad}" />
+				</p:column>
+				<p:column headerText="Pendiente" style="width:20%" resizable="true"
+					sortBy="#{obras2.pendiente}">
+					<f:facet name="header">Pendiente</f:facet>
+							<h:outputText value="#{obras2.pendiente}" />
+				</p:column>
+				<p:column headerText="Estado" style="width:20%" resizable="true"
+					sortBy="#{obras2.estado}">
+					<f:facet name="header">Estado</f:facet>
+							<h:outputText value="#{obras2.estado}" />
+				</p:column>
+				<p:column headerText="Vencimiento" style="width:20%"
+					resizable="true" sortBy="#{obras2.vencimiento}">
+					<f:facet name="header">Vencimiento</f:facet>
+							<h:outputText value="#{obras2.vencimiento}" />
+				</p:column>
+				<p:column headerText="Forma pago" style="width:20%" resizable="true"
+					sortBy="#{obras2.formaPago}">
+					<f:facet name="header">Forma pago</f:facet>
+							<h:outputText value="#{obras2.formaPago}" />
+				</p:column>
+				<p:column headerText="Pagado" style="width:20%" resizable="true"
+					sortBy="#{obras2.pagado}">
+					<f:facet name="header">Pagado</f:facet>
+							<h:outputText value="#{obras2.pagado}" />
+				</p:column>
+				<p:column headerText="Fecha pago" style="width:20%" resizable="true"
+					sortBy="#{obras2.fechaPago}">
+					<f:facet name="header">Fecha pago</f:facet>
+							<h:outputText value="#{obras2.fechaPago}" />
+				</p:column>
+				<p:column headerText="Banco" style="width:20%" resizable="true"
+					sortBy="#{obras2.banco}">
+					<f:facet name="header">Banco</f:facet>
+							<h:outputText value="#{obras2.banco}" />
+				</p:column>
+
+				<p:column headerText="Previsión" style="width:20%" resizable="true"
+					sortBy="#{obras2.prevision}">
+					<f:facet name="header">Previsión</f:facet>
+							<h:outputText value="#{obras2.prevision}" />
+				</p:column>
+
+			</p:dataTable>
+				</p:outputPanel>
+			</p:dialog>
+
+
+			<p:commandLink id="xls" ajax="false">
+				<p:graphicImage value="/images/excel.png" />
+				<pe:exporter type="xlsx" target="obras,gast"
+					fileName="Informe tesorería" datasetPadding="4" />
+
+			</p:commandLink>
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

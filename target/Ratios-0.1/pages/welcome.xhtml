@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+<h:form>
+	<p:panel header="Ratios" id="portada">
+		<h:outputText value="Bienvenid@ #{logInBean.loginName}."/>
+		
+		<br/>
+		<br/>
+		<h:outputText value=" Para comenzar a introducir sus ratios seleccione la opción de introducir
+		ratios en el menu o haga clic en el siguiente enlace:"/>
+		<br/>
+		<br/>
+		<p:commandLink id="nonAjax" actionListener="#{loaderBean.openPage('/pages/oldUserPage.xhtml')}" 
+		action="#{introducirBean.showTodayRatios()}"  update=":contentLoader">
+        <h:outputText value="Comenzar" />
+    </p:commandLink>
+</p:panel>
+</h:form>
+</h:body>
+</html>

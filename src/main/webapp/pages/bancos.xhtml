@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+
+	<title><ui:insert name="title">Bancos</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Bancos" id="bancos" style="width:100%">
+			<p:dataTable var="obras" value="#{categoriaBean.infoBancos}" id="obras"
+				editable="true" resizableColumns="true" style="width:100%">
+
+				<p:column headerText="Nombre del banco" style="width:27%" resizable="true">
+				<f:facet name="header">Nombre del banco</f:facet>
+					<h:outputText value="#{obras.nombre}" />
+				</p:column>
+				
+				<p:column headerText="Fondos" style="width:73%" resizable="true">
+				<f:facet name="header">Fondos</f:facet>
+					<h:outputText value="#{obras.fondos} €" />
+				</p:column>
+
+				
+			</p:dataTable>
+
+		</p:panel>
+
+	</h:form>
+</h:body>
+</html>

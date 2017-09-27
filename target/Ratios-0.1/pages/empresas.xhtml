@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+
+	<title><ui:insert name="title">Gastos</ui:insert></title>
+
+	<link href="/#{applicationBean.appname}/css/layout.css"
+		rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+		<p:messages id="mes" showDetail="true" autoUpdate="true" closable="true" />
+
+		<p:panel header="Introducir la empresa" id="actual">
+			<br />
+			<p:panelGrid columns="2" style="width:50%;">
+				<f:facet name="header">
+			Empresas
+			</f:facet>
+				<p:column style="width:20%">
+				Nombre de la empresa
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{empresaBean.empresa.nombre}"
+						id="nombreEmpresa" />
+				</p:column>
+				<p:column style="width:20%">
+				CIF
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputMask value="#{empresaBean.empresa.cif}"
+						id="cif" mask="a-99999999"/>
+				</p:column>
+				<p:column style="width:20%">
+				Plazo de pago (días)
+			</p:column>
+				<p:column style="width:20%">
+					<p:inputText value="#{empresaBean.empresa.plazoPago}" id="plazoPago" />
+				</p:column>
+				
+				<p:column style="width:20%">
+				Método de pago
+			</p:column>
+				<p:column style="width:20%">
+					<p:selectOneMenu value="#{empresaBean.empresa.metodoPago}" update="actual">
+						<f:selectItem itemLabel="Seleccione uno" itemValue="" />
+						<f:selectItems value="#{empresaBean.metodosPago}" var="obra"
+							itemLabel="#{obra}" itemValue="#{obra}" />
+					</p:selectOneMenu>
+				</p:column>
+				
+			</p:panelGrid>
+			<p:commandButton value="Guardar empresa" id="save" ajax="true"
+				update="@form mes" actionListener="#{empresaBean.saveEmpresa}">
+			</p:commandButton>
+		</p:panel>
+		
+		
+
+		<p:panel header="Empresas" id="empresas1" style="width:100%">
+			<p:dataTable var="obras" value="#{empresaBean.empresas}" id="obras"
+				editable="true" resizableColumns="true" style="width:100%">
+
+				<p:column headerText="Nombre" style="width:20%"
+					resizable="true" sortBy="#{obras.nombre}">
+					<f:facet name="header">Nombre</f:facet>
+						<h:outputText value="#{obras.nombre}" />
+				</p:column>
+				<p:column headerText="CIF" style="width:20%"
+					resizable="true" sortBy="#{obras.cif}">
+					<f:facet name="header">CIF</f:facet>
+						<h:outputText value="#{obras.cif}" />
+				</p:column>
+				<p:column headerText="Plazo Pago" style="width:20%"
+					resizable="true" sortBy="#{obras.plazoPago}">
+					<f:facet name="header">Plazo de pago</f:facet>
+						<h:outputText value="#{obras.plazoPago}" />
+				</p:column>
+				<p:column headerText="Método Pago" style="width:20%" resizable="true" sortBy="#{obras.metodoPago}">
+				<f:facet name="header">Método de pago</f:facet>
+							<h:outputText value="#{obras.metodoPago}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+			<p:commandLink id="xls" ajax="false">
+				<p:graphicImage value="/images/excel.png" />
+				<pe:exporter type="xlsx"
+					target="obras"
+					fileName="Empresas" datasetPadding="4" />
+
+			</p:commandLink>
+
+		</p:panel>
+
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog widgetVar="statusDialog" header="Cargando" resizable="false"
+			draggable="false" closable="false" position="center top"
+			styleClass="disable-scroll">
+			<p:graphicImage value="/images/loading.gif" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>
